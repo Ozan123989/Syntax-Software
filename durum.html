@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ürün Durumu | Syntax Software</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="icon" type="image/webp" href="images/syntax-logo.webp">
+</head>
+<body>
+    <!-- DYNAMIC GAME BACKGROUND LAYERS -->
+    <div class="game-bg-layer game-bg-val" style="background-image: url('images/valorant-bg.webp');">
+      <div class="game-bg-overlay val-overlay"></div>
+    </div>
+    <div class="game-bg-layer game-bg-cs2" style="background-image: url('images/cs2-bg.webp');">
+      <div class="game-bg-overlay cs2-overlay"></div>
+    </div>
+
+
+  <!-- Atmosphere -->
+  <div class="space-background">
+    <canvas class="stars-canvas"></canvas>
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="cyber-grid"></div>
+  </div>
+
+  <div class="site-wrapper">
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="container navbar-inner">
+        <!-- Left: Logo & Quick controls -->
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="index.html" class="logo-group">
+            <div class="logo-badge"><img src="images/syntax-logo.webp" alt="Syntax Logo" class="brand-logo-img"></div>
+            <div class="logo-text">
+              <div class="logo-title-stacked">
+                <span>Syntax</span>
+                <span>Software</span>
+              </div>
+              <div class="logo-sub-stacked">
+                <span>VALORANT</span>
+                <span>HİLELERİ</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="nav-quick-tools">
+            <button class="icon-btn" id="navSearchBtn" title="Arama yap (Ctrl+K)" aria-label="Arama yap">
+              <i data-lucide="search" style="width:16px;height:16px;"></i>
+            </button>
+            <div class="lang-dropdown-wrapper" id="langDropdownWrapper">
+              <button class="lang-pill" id="langPillBtn" aria-expanded="false" aria-label="Dil Seçiniz">
+                <span class="flag-icon-svg" id="currentLangFlag">
+                  <svg viewBox="0 0 1200 800" width="18" height="12">
+                    <rect width="1200" height="800" fill="#E30A17"/>
+                    <circle cx="425" cy="400" r="200" fill="#ffffff"/>
+                    <circle cx="475" cy="400" r="160" fill="#E30A17"/>
+                    <polygon points="583.33,400 706.87,440.14 630.52,335.86 630.52,464.14 706.87,359.86" fill="#ffffff"/>
+                  </svg>
+                </span>
+                <span id="currentLangCode">TR</span>
+                <i data-lucide="chevron-down" style="width:12px;height:12px;"></i>
+              </button>
+              <div class="lang-dropdown-menu" id="langDropdownMenu">
+                <button class="lang-option-item active" data-lang="tr" data-code="TR" data-name="Türkçe">
+                  <span class="flag-icon-svg">
+                    <svg viewBox="0 0 1200 800" width="18" height="12">
+                      <rect width="1200" height="800" fill="#E30A17"/>
+                      <circle cx="425" cy="400" r="200" fill="#ffffff"/>
+                      <circle cx="475" cy="400" r="160" fill="#E30A17"/>
+                      <polygon points="583.33,400 706.87,440.14 630.52,335.86 630.52,464.14 706.87,359.86" fill="#ffffff"/>
+                    </svg>
+                  </span>
+                  <span>Türkçe</span>
+                  <i data-lucide="check" class="check-icon"></i>
+                </button>
+                <button class="lang-option-item" data-lang="en" data-code="EN" data-name="English">
+                  <span class="flag-icon-svg">
+                    <svg viewBox="0 0 60 30" width="18" height="12">
+                      <clipPath id="flag-en-c1"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+                      <clipPath id="flag-en-c2"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+                      <g clip-path="url(#flag-en-c1)">
+                        <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+                        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+                        <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#flag-en-c2)" stroke="#C8102E" stroke-width="4"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                        <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+                      </g>
+                    </svg>
+                  </span>
+                  <span>English</span>
+                  <i data-lucide="check" class="check-icon"></i>
+                </button>
+                <button class="lang-option-item" data-lang="de" data-code="DE" data-name="Deutsch">
+                  <span class="flag-icon-svg">
+                    <svg viewBox="0 0 5 3" width="18" height="12">
+                      <rect width="5" height="1" y="0" fill="#000000"/>
+                      <rect width="5" height="1" y="1" fill="#DD0000"/>
+                      <rect width="5" height="1" y="2" fill="#FFCE00"/>
+                    </svg>
+                  </span>
+                  <span>Deutsch</span>
+                  <i data-lucide="check" class="check-icon"></i>
+                </button>
+                <button class="lang-option-item" data-lang="ru" data-code="RU" data-name="Русский">
+                  <span class="flag-icon-svg">
+                    <svg viewBox="0 0 3 2" width="18" height="12">
+                      <rect width="3" height="2" fill="#d52b1e"/>
+                      <rect width="3" height="1.333" fill="#0039a6"/>
+                      <rect width="3" height="0.667" fill="#ffffff"/>
+                    </svg>
+                  </span>
+                  <span>Русский</span>
+                  <i data-lucide="check" class="check-icon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center: Nav links -->
+        <nav class="nav-links">
+          <a href="index.html" class="nav-link">
+            <i data-lucide="home"></i>
+            <span class="nav-text-stacked">
+              <span data-i18n="home1">Ana</span>
+              <span data-i18n="home2">sayfa</span>
+            </span>
+          </a>
+          <a href="magaza.html" class="nav-link">
+            <i data-lucide="shopping-bag"></i>
+            <span data-i18n="products">Ürünler</span>
+          </a>
+          <a href="bayi.html" class="nav-link">
+            <i data-lucide="users"></i>
+            <span data-i18n="reseller">Bayi</span>
+          </a>
+          <a href="durum.html" class="nav-link active">
+            <i data-lucide="activity"></i>
+            <span data-i18n="status">Durum</span>
+          </a>
+          <a href="sartlar.html" class="nav-link">
+            <i data-lucide="file-text"></i>
+            <span data-i18n="terms">Şartlar</span>
+          </a>
+          <a href="https://discord.gg/wFaNxzyMU" target="_blank" class="nav-link">
+            <i data-lucide="headphones"></i>
+            <span data-i18n="support">Destek</span>
+          </a>
+        </nav>
+
+        <!-- Right: Actions -->
+        <div class="nav-actions">
+          <button class="btn-cart" id="navCartBtn" title="Sepetiniz">
+            <i data-lucide="shopping-cart" style="width:16px;height:16px;"></i>
+            <span data-i18n="cart">Sepet</span>
+            <span class="cart-count">0</span>
+          </button>
+          
+          <a href="https://discord.gg/wFaNxzyMU" target="_blank" class="btn-discord-nav">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+            </svg>
+            <span>Discord</span>
+          </a>
+
+          <a href="https://www.youtube.com/@SyntaxSoftware" target="_blank" class="btn-yt-nav" title="YouTube Kanalımız">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            <span>YouTube</span>
+          </a>
+
+          <button type="button" class="btn-panel-nav" id="navPanelBtn" title="Panel / Giriş Yap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+            <span data-i18n="panel_login">Panel / Giriş</span>
+          </button>
+
+          <button class="mobile-toggle">
+            <i data-lucide="menu" style="width:24px;height:24px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-drawer">
+        <a href="index.html" class="nav-link">Ana sayfa</a>
+        <a href="magaza.html" class="nav-link">Ürünler</a>
+        <a href="bayi.html" class="nav-link">Bayi</a>
+        <a href="durum.html" class="nav-link active">Durum</a>
+        <a href="sartlar.html" class="nav-link">Şartlar</a>
+        <a href="https://discord.gg/wFaNxzyMU" target="_blank" class="nav-link">Destek</a>
+              <a href="#" class="nav-link btn-mobile-panel-open" onclick="if(window.openAuthModal){window.openAuthModal('user');}return false;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          <span>Panel / Giriş Yap</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- STATUS CONTENT -->
+    <main class="main-content">
+      <div class="container" style="padding-top: 3rem;">
+        
+        <!-- Header Block -->
+        <div class="page-header-block">
+          <span class="header-category-tag">ERİŞİLEBİLİRLİK</span>
+          <h1 class="header-main-title">Ürün durumu</h1>
+          <p class="header-subtitle">
+            Yazılımlarımızın güncel tespit ve servis durumu — Discord botumuz ile anlık senkronize edilir.
+          </p>
+        </div>
+
+        <!-- DISCORD EMBED OFFICIAL STATUS VIEW (1:1 with Discord Channel # // status) -->
+        <div class="discord-status-view-wrapper">
+          
+          <!-- Channel Header Bar -->
+          <div class="discord-channel-header">
+            <div class="discord-channel-title-group">
+              <div class="discord-channel-hash">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                <span>// status</span>
+              </div>
+              <div class="discord-channel-sub">
+                Bu, resmi <strong># // status</strong> kanalının canlı web entegrasyonudur.
+              </div>
+            </div>
+
+            <a href="https://discord.gg/wFaNxzyMU" target="_blank" rel="noopener" class="discord-open-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+              </svg>
+              <span>Discord Kanalına Katıl</span>
+            </a>
+          </div>
+
+          <!-- Message Row from Bot -->
+          <div class="discord-msg-row">
+            <!-- Bot Avatar with Syntax S Logo -->
+            <div class="discord-bot-avatar">
+              <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+                <rect width="36" height="36" rx="18" fill="#14151f"/>
+                <path d="M12 11H22C24 11 25 12.2 23.5 14L18.5 20.5C17 22 18.5 23.5 20.5 23.5H24.5" stroke="#f43f5e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M24 11L12 23.5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.35"/>
+              </svg>
+            </div>
+
+            <!-- Message Body -->
+            <div class="discord-msg-content">
+              <div class="discord-bot-meta">
+                <span class="discord-bot-name">Syntax Software BOT</span>
+                <span class="discord-bot-badge">UYG</span>
+                <span class="discord-msg-time" id="discordStatusTime">Bugün 14:16</span>
+              </div>
+
+              <!-- Embed Card (Exact match to Discord screenshot) -->
+              <div class="discord-embed-card">
+                
+                <!-- Embed Top: Title, Subtitle & Circular Logo Thumbnail -->
+                <div class="discord-embed-top">
+                  <div>
+                    <h2 class="discord-embed-title">Syntax Software | Product Status</h2>
+                    <p class="discord-embed-desc">Current status of all our products</p>
+                  </div>
+
+                  <!-- Exact Circular Logo Badge from Screenshot -->
+                  <div class="discord-embed-thumb" title="Syntax Software">
+                    <svg viewBox="0 0 36 36" fill="none" style="width: 34px; height: 34px;">
+                      <circle cx="18" cy="18" r="16.5" fill="#0b0c12" stroke="#f43f5e" stroke-width="1.5"/>
+                      <path d="M12 11H22C24 11 25 12.2 23.5 14L18.5 20.5C17 22 18.5 23.5 20.5 23.5H24.5" stroke="#f43f5e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M24 11L12 23.5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.35"/>
+                    </svg>
+                    <span class="discord-embed-thumb-text">SYNTAX</span>
+                  </div>
+                </div>
+
+                <!-- 3-Column Status Grid (Exact products from store) -->
+                <div class="discord-status-columns">
+                  
+                  <!-- Col 1 / Item 1: CS Kernel -->
+                  <div class="discord-status-item">
+                    <span class="discord-item-name">CS Kernel</span>
+                    <span class="discord-item-state online">
+                      <span class="discord-dot green"></span>
+                      <span>Online</span>
+                    </span>
+                  </div>
+
+                  <!-- Col 2 / Item 2: Valorant Internal -->
+                  <div class="discord-status-item">
+                    <span class="discord-item-name">Valorant Internal</span>
+                    <span class="discord-item-state online">
+                      <span class="discord-dot green"></span>
+                      <span>Online</span>
+                    </span>
+                  </div>
+
+                  <!-- Col 3 / Item 3: Valorant External -->
+                  <div class="discord-status-item">
+                    <span class="discord-item-name">Valorant External</span>
+                    <span class="discord-item-state online">
+                      <span class="discord-dot green"></span>
+                      <span>Online</span>
+                    </span>
+                  </div>
+
+                  <!-- Col 1 / Item 4: Temp spoofer -->
+                  <div class="discord-status-item">
+                    <span class="discord-item-name">Temp spoofer</span>
+                    <span class="discord-item-state online">
+                      <span class="discord-dot green"></span>
+                      <span>Online</span>
+                    </span>
+                  </div>
+
+                  <!-- Col 2 / Item 5: Perm spoofer -->
+                  <div class="discord-status-item">
+                    <span class="discord-item-name">Perm spoofer</span>
+                    <span class="discord-item-state online">
+                      <span class="discord-dot green"></span>
+                      <span>Online</span>
+                    </span>
+                  </div>
+
+                  <!-- Col 3 / Item 6: OneClick Spoofer -->
+                  <div class="discord-status-item">
+                    <span class="discord-item-name">OneClick Spoofer</span>
+                    <span class="discord-item-state offline">
+                      <span class="discord-dot red"></span>
+                      <span>Offline</span>
+                    </span>
+                  </div>
+
+                  <!-- Col 1 / Item 7: Cheat Emu -->
+                  <div class="discord-status-item">
+                    <span class="discord-item-name">Cheat Emu</span>
+                    <span class="discord-item-state online">
+                      <span class="discord-dot green"></span>
+                      <span>Online</span>
+                    </span>
+                  </div>
+
+                  <!-- Col 2 / Item 8: Vanguard Emulator -->
+                  <div class="discord-status-item">
+                    <span class="discord-item-name">Vanguard Emulator</span>
+                    <span class="discord-item-state online">
+                      <span class="discord-dot green"></span>
+                      <span>Online</span>
+                    </span>
+                  </div>
+
+                </div>
+
+                <!-- Status Legend -->
+                <div class="discord-status-legend-box">
+                  <div class="discord-legend-title">Status Legend</div>
+                  <div class="discord-legend-line">
+                    <span class="discord-legend-item">
+                      <span class="discord-dot green"></span>
+                      <span>Online</span>
+                    </span>
+                    <span class="discord-legend-sep">|</span>
+                    <span class="discord-legend-item">
+                      <span class="discord-dot yellow"></span>
+                      <span>Maintenance</span>
+                    </span>
+                    <span class="discord-legend-sep">|</span>
+                    <span class="discord-legend-item">
+                      <span class="discord-dot red"></span>
+                      <span>Offline</span>
+                    </span>
+                    <span class="discord-legend-sep">|</span>
+                    <span class="discord-legend-item">
+                      <span class="discord-dot orange"></span>
+                      <span>Use at Own Risk</span>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Embed Footer -->
+                <div class="discord-embed-footer">
+                  <span class="discord-embed-footer-icon">S</span>
+                  <span>Syntax Software | Last update • Otomatik Canlı Senkronizasyon</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Tags Row (Matching Store Categories) -->
+        <div class="filter-tags-row">
+          <button class="filter-pill active" data-status-filter="all">
+            <span>Hepsi</span>
+          </button>
+          <button class="filter-pill" data-status-filter="valorant">
+            <span>Valorant</span>
+          </button>
+          <button class="filter-pill" data-status-filter="cs2">
+            <span>Counter-Strike 2</span>
+          </button>
+          <button class="filter-pill" data-status-filter="spoofer">
+            <span>Spoofer & Emulator</span>
+          </button>
+        </div>
+
+        <!-- Status Cards Grid (8 Cards Matching Store Products) -->
+        <div class="status-cards-grid">
+          
+          <!-- Card 1: CS Kernel (COUNTER-STRIKE 2) -->
+          <div class="status-card-box" data-category="cs2" onclick="window.location.href='magaza.html'" style="cursor: pointer;" title="Mağazada incelemek için tıklayınız">
+            <span class="corner-bracket corner-tl"></span>
+            <span class="corner-bracket corner-tr"></span>
+            <span class="corner-bracket corner-bl"></span>
+            <span class="corner-bracket corner-br"></span>
+
+            <div class="status-card-top">
+              <span class="status-game-tag" style="color: #ea580c;">COUNTER-STRIKE 2</span>
+              <span class="badge-status-und">
+                <span class="mini-dot"></span>
+                UNDETECTED
+              </span>
+            </div>
+            <div class="status-product-name">CS Kernel</div>
+          </div>
+
+          <!-- Card 2: Valorant Internal (VALORANT) -->
+          <div class="status-card-box" data-category="valorant" onclick="window.location.href='magaza.html'" style="cursor: pointer;" title="Mağazada incelemek için tıklayınız">
+            <span class="corner-bracket corner-tl"></span>
+            <span class="corner-bracket corner-tr"></span>
+            <span class="corner-bracket corner-bl"></span>
+            <span class="corner-bracket corner-br"></span>
+
+            <div class="status-card-top">
+              <span class="status-game-tag" style="color: #a855f7;">VALORANT</span>
+              <span class="badge-status-und">
+                <span class="mini-dot"></span>
+                UNDETECTED
+              </span>
+            </div>
+            <div class="status-product-name">Valorant Internal</div>
+          </div>
+
+          <!-- Card 3: Valorant External (VALORANT) -->
+          <div class="status-card-box" data-category="valorant" onclick="window.location.href='magaza.html'" style="cursor: pointer;" title="Mağazada incelemek için tıklayınız">
+            <span class="corner-bracket corner-tl"></span>
+            <span class="corner-bracket corner-tr"></span>
+            <span class="corner-bracket corner-bl"></span>
+            <span class="corner-bracket corner-br"></span>
+
+            <div class="status-card-top">
+              <span class="status-game-tag" style="color: #f43f5e;">VALORANT</span>
+              <span class="badge-status-und">
+                <span class="mini-dot"></span>
+                UNDETECTED
+              </span>
+            </div>
+            <div class="status-product-name">Valorant External</div>
+          </div>
+
+          <!-- Card 4: Temp spoofer (SPOOFER & HWID) -->
+          <div class="status-card-box" data-category="spoofer" onclick="window.location.href='magaza.html'" style="cursor: pointer;" title="Mağazada incelemek için tıklayınız">
+            <span class="corner-bracket corner-tl"></span>
+            <span class="corner-bracket corner-tr"></span>
+            <span class="corner-bracket corner-bl"></span>
+            <span class="corner-bracket corner-br"></span>
+
+            <div class="status-card-top">
+              <span class="status-game-tag" style="color: #0284c7;">SPOOFER & HWID</span>
+              <span class="badge-status-und">
+                <span class="mini-dot"></span>
+                UNDETECTED
+              </span>
+            </div>
+            <div class="status-product-name">Temp spoofer</div>
+          </div>
+
+          <!-- Card 5: Perm spoofer (SPOOFER & HWID) -->
+          <div class="status-card-box" data-category="spoofer" onclick="window.location.href='magaza.html'" style="cursor: pointer;" title="Mağazada incelemek için tıklayınız">
+            <span class="corner-bracket corner-tl"></span>
+            <span class="corner-bracket corner-tr"></span>
+            <span class="corner-bracket corner-bl"></span>
+            <span class="corner-bracket corner-br"></span>
+
+            <div class="status-card-top">
+              <span class="status-game-tag" style="color: #9333ea;">SPOOFER & HWID</span>
+              <span class="badge-status-und">
+                <span class="mini-dot"></span>
+                UNDETECTED
+              </span>
+            </div>
+            <div class="status-product-name">Perm spoofer</div>
+          </div>
+
+          <!-- Card 6: OneClick Spoofer (SPOOFER & HWID) -->
+          <div class="status-card-box status-offline" data-category="spoofer" onclick="window.location.href='magaza.html'" style="cursor: pointer;" title="Duyuruları incelemek için tıklayınız">
+            <span class="corner-bracket corner-tl"></span>
+            <span class="corner-bracket corner-tr"></span>
+            <span class="corner-bracket corner-bl"></span>
+            <span class="corner-bracket corner-br"></span>
+
+            <div class="status-card-top">
+              <span class="status-game-tag" style="color: #d97706;">SPOOFER & HWID</span>
+              <span class="badge-status-offline">
+                <span class="mini-dot"></span>
+                OFFLINE
+              </span>
+            </div>
+            <div class="status-product-name">OneClick Spoofer</div>
+          </div>
+
+          <!-- Card 7: Cheat Emu (SPOOFER & EMULATOR) -->
+          <div class="status-card-box" data-category="spoofer" onclick="window.location.href='magaza.html'" style="cursor: pointer;" title="Mağazada incelemek için tıklayınız">
+            <span class="corner-bracket corner-tl"></span>
+            <span class="corner-bracket corner-tr"></span>
+            <span class="corner-bracket corner-bl"></span>
+            <span class="corner-bracket corner-br"></span>
+
+            <div class="status-card-top">
+              <span class="status-game-tag" style="color: #059669;">SPOOFER & EMULATOR</span>
+              <span class="badge-status-und">
+                <span class="mini-dot"></span>
+                UNDETECTED
+              </span>
+            </div>
+            <div class="status-product-name">Cheat Emu</div>
+          </div>
+
+          <!-- Card 8: Vanguard Emulator (SPOOFER & EMULATOR) -->
+          <div class="status-card-box" data-category="spoofer" onclick="window.location.href='magaza.html'" style="cursor: pointer;" title="Mağazada incelemek için tıklayınız">
+            <span class="corner-bracket corner-tl"></span>
+            <span class="corner-bracket corner-tr"></span>
+            <span class="corner-bracket corner-bl"></span>
+            <span class="corner-bracket corner-br"></span>
+
+            <div class="status-card-top">
+              <span class="status-game-tag" style="color: #2563eb;">SPOOFER & EMULATOR</span>
+              <span class="badge-status-und">
+                <span class="mini-dot"></span>
+                UNDETECTED
+              </span>
+            </div>
+            <div class="status-product-name">Vanguard Emulator</div>
+          </div>
+
+        </div>
+
+        <!-- Sync Note -->
+        <p class="status-footer-note" style="text-align: center; color: #6b7280; font-size: 0.85rem; margin-top: 2.5rem; margin-bottom: 2rem;">Discord ile senkron · periyodik güncellenir</p>
+
+      </div>
+    </main>
+
+    <!-- Floating Actions -->
+    <div class="floating-widget-stack">
+      
+      <a href="https://www.youtube.com/@SyntaxSoftware" target="_blank" class="float-action-btn float-btn-yt" title="YouTube (@SyntaxSoftware)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+        <span class="float-tooltip">YouTube</span>
+      </a>
+<a href="https://wa.me/905346460821" target="_blank" class="float-action-btn float-btn-whatsapp">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+      </a>
+      <button class="float-action-btn float-btn-chat" title="Canlı Destek" type="button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        <span class="float-tooltip">Canlı Destek</span>
+      </button>
+    </div>
+
+    <!-- RICH 4-COLUMN FOOTER (VGC.WTF STYLE) -->
+    <footer class="vgc-rich-footer">
+      <div class="container">
+        <div class="footer-columns-grid">
+          <!-- Col 1: Brand & Slogan -->
+          <div class="footer-col-brand">
+            <a href="index.html" class="logo-group">
+              <div class="logo-badge"><img src="images/syntax-logo.webp" alt="Syntax Logo" class="brand-logo-img"></div>
+              <div class="logo-text">
+                <span class="logo-title">Syntax Software</span>
+                <span class="logo-sub">Valorant Hileleri</span>
+              </div>
+            </a>
+            <p>
+              Premium dijital performans için nihai adres. En iyisinde uzlaşmayanlar için tasarlandı. Seçkin ekosistemimize bugün katılın.
+            </p>
+          </div>
+
+          <!-- Col 2: Keşfet -->
+          <div>
+            <h4 class="footer-col-title">Keşfet</h4>
+            <ul class="footer-nav-list">
+              <li><a href="index.html">Ana sayfa</a></li>
+              <li><a href="magaza.html">Tüm ürünler</a></li>
+              <li><a href="durum.html">Servis durumu</a></li>
+              <li><a href="bayi.html">Bayi programı</a></li>
+              <li><a href="magaza.html">Sepet</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Oyunlar -->
+          <div>
+            <h4 class="footer-col-title">Oyunlar</h4>
+            <ul class="footer-nav-list">
+              <li><a href="magaza.html?cat=spoofer">t3mp / p3rm Spoofer</a></li>
+              <li><a href="magaza.html?cat=spoofer">Vanguard Emulator</a></li>
+              <li><a href="magaza.html?cat=valorant">Syntax Elit Valorant</a></li>
+              <li><a href="magaza.html?cat=valorant">Valorant Slotted VIP</a></li>
+              <li><a href="magaza.html?cat=cs2">CS External</a></li>
+              <li><a href="magaza.html?cat=cs2">CS2 Private Slotted</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 4: Topluluk & Yasal -->
+          <div>
+            <h4 class="footer-col-title">Topluluk</h4>
+            <ul class="footer-nav-list">
+              <li><a href="https://discord.gg/wFaNxzyMU" target="_blank">Discord Topluluğu</a></li>
+              <li><a href="https://wa.me/905346460821" target="_blank">WhatsApp Destek</a></li>
+              <li><a href="sartlar.html">Kullanım Şartları</a></li>
+              <li><a href="sartlar.html">Satış Sözleşmesi</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- System Status Bar -->
+        <div class="footer-status-bar">
+          <div class="footer-status-pill">
+            <span class="pulse-dot"></span>
+            <span>Tüm sistemler çalışıyor (100% Online)</span>
+          </div>
+
+          <div class="footer-copyright-text">
+            © 2026 Syntax Software. All Rights Reserved.
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    if (window.lucide) window.lucide.createIcons();
+  </script>
+</body>
+</html>
