@@ -1,0 +1,8 @@
+{
+  "bot_token": "",
+  "web_ticket_channel_id": "web-ticket",
+  "webhook_url": "",
+  "port": 5055,
+  "host": "127.0.0.1",
+  "server_name": "Syntax Software Official"
+}
