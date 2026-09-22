@@ -1,8 +1,8 @@
 {
-  "bot_token": "",
+  "bot_token": "b4b832a50d19edff2515a71c91b5303dd93ab457e62928a5f7ad9e60da60b8ac",
   "web_ticket_channel_id": "web-ticket",
-  "webhook_url": "",
+  "webhook_url": "https://discord.com/api/webhooks/1551743892557140001/ZYn5mUrAbfXOlwSPgOxzVABzCn8zny1kq3lT1OTQn2virBZEcAfbUPlb1RsMlZ2ouEFf",
   "port": 5055,
-  "host": "127.0.0.1",
+  "host": "0.0.0.0",
   "server_name": "Syntax Software Official"
 }

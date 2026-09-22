@@ -199,207 +199,40 @@
     </header>
 
     <!-- TERMS & CONTRACT MAIN BODY -->
-    <main class="main-content">
-      <div class="container terms-wrapper">
+    <main class="page-content kurucu-page-wrapper">
+      <div class="container" style="max-width: 1280px;">
         
-        <!-- Back Link -->
-        <a href="index.html" class="back-to-home-link">
-          <i data-lucide="arrow-left" style="width:18px;height:18px;"></i>
-          <span>Ana sayfaya dön</span>
-        </a>
+        <!-- Breadcrumb / Header Top -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+          <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; color:#94a3b8;">
+            <a href="index.html" style="color:#94a3b8; text-decoration:none;">Ana sayfa</a>
+            <span>/</span>
+            <span style="color:#fbbf24; font-weight:700;">👑 Kurucu Yönetim Merkezi (Sekme)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span class="owner-status-badge" style="background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid rgba(245,158,11,0.4); padding:0.3rem 0.75rem; border-radius:999px; font-size:0.75rem; font-weight:800; display:inline-flex; align-items:center; gap:0.4rem;">
+              <span style="width:7px; height:7px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+              <span>NOXY KONTROL SEKMENTİ</span>
+            </span>
+          </div>
+        </div>
 
-        <!-- Header -->
-        <div class="contract-header">
-          <div style="margin-bottom: 0.75rem;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-          <h1 class="contract-title">MÜŞTERİ KURALLARI VE SATIŞ SÖZLEŞMESİ</h1>
-          <p class="contract-subtitle">
-            Sunucumuzdan ürün satın alan her kullanıcı, aşağıdaki maddeleri okumuş ve kabul etmiş sayılır.
+        <!-- 1. Guard for unauthorized visitors -->
+        <div id="kurucuAccessDenied" class="kurucu-guard-card" style="display:none;">
+          <div style="width:68px; height:68px; border-radius:50%; background:rgba(239,68,68,0.12); display:inline-flex; align-items:center; justify-content:center; color:#ef4444; margin-bottom:1.25rem; font-size:2rem; border:1px solid rgba(239,68,68,0.3);">🔒</div>
+          <h2 style="color:#fff; font-size:1.6rem; font-weight:900; margin-bottom:0.5rem; letter-spacing:0.02em;">403 - Yetkisiz Erişim</h2>
+          <p style="color:#9ca3af; font-size:0.92rem; line-height:1.6; max-width:460px; margin:0 auto 1.75rem;">
+            Bu sekme ve yönetim merkezi yalnızca Kurucu (NOXY) yetkisine sahip hesaba açıktır. Lütfen kurucu hesabınızla oturum açınız.
           </p>
-        </div>
-
-        <!-- Section 1: Kullanım ve Sorumluluk -->
-        <div class="contract-card-section">
-          <div class="contract-section-header">
-            <div class="section-icon-box">
-              <i data-lucide="shield-alert"></i>
-            </div>
-            <h2 class="contract-section-title">Kullanım ve Sorumluluk</h2>
-          </div>
-
-          <div class="contract-items-list">
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#a855f7;"></i>
-                <span>Kendi Sorumluluğunuz</span>
-              </div>
-              <p class="contract-item-text">
-                Tüm yazılımlarımız "risk" içerir. Yazılımların kullanımı sonucu oluşabilecek oyun yasaklamalarından (ban) tamamen kullanıcı sorumludur. "Ban yememe garantisi" hiçbir yazılım için %100 verilmez.
-              </p>
-            </div>
-
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#a855f7;"></i>
-                <span>Hesap Güvenliği</span>
-              </div>
-              <p class="contract-item-text">
-                Üçüncü parti yazılım kullanımı sebebiyle ana hesaplarınızın zarar görmesi durumunda <strong>[Syntax Software]</strong> sorumlu tutulamaz. "Yan hesap" (Smurf) kullanımı her zaman tavsiye edilir.
-              </p>
-            </div>
-
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#a855f7;"></i>
-                <span>Cihaz Sorumluluğu</span>
-              </div>
-              <p class="contract-item-text">
-                Cihazınızın sorumluluğu tamamen size aittir. Syntax Software hiçbir sorumluluk almaz.
-              </p>
-            </div>
+          <div style="display:flex; justify-content:center; gap:0.75rem;">
+            <a href="index.html" class="btn-outline" style="padding:0.65rem 1.3rem; text-decoration:none; font-size:0.85rem;">Ana Sayfaya Dön</a>
+            <button type="button" class="btn-primary" onclick="if(window.openAuthModal)window.openAuthModal('admin');" style="padding:0.65rem 1.5rem; cursor:pointer; font-size:0.85rem;">Kurucu Girişi Yap</button>
           </div>
         </div>
 
-        <!-- Section 2: İade ve Değişim Politikası -->
-        <div class="contract-card-section">
-          <div class="contract-section-header">
-            <div class="section-icon-box cyan">
-              <i data-lucide="rotate-ccw"></i>
-            </div>
-            <h2 class="contract-section-title">İade ve Değişim Politikası</h2>
-          </div>
-
-          <div class="contract-items-list">
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#2dd4bf;"></i>
-                <span>Dijital Ürün Kapsamı</span>
-              </div>
-              <p class="contract-item-text">
-                Satın alınan ürünler "tek kullanımlık dijital lisans" kapsamında olduğu için, ürün teslim edildikten sonra iade yapılması mümkün değildir.
-              </p>
-            </div>
-
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#2dd4bf;"></i>
-                <span>Teknik Sorunlar</span>
-              </div>
-              <p class="contract-item-text">
-                Eğer yazılım bilgisayarınızda çalışmıyorsa ve sorun bilgisayarınızla alakalıysa bu kullanıcı hatasıdır; iade sağlanmaz. Teknik ekibimiz sorunu çözmek için elinden geleni yapacaktır. Çözülemeyen, bizden kaynaklı sistemsel sorunlarda (yazılımın tamamen fixlenmesi gibi) telafi süresi eklenir.
-              </p>
-            </div>
-
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#2dd4bf;"></i>
-                <span>Hatalı Alım</span>
-              </div>
-              <p class="contract-item-text">
-                Yanlış ürün alımı veya "beğenmedim" gibi keyfi sebeplerle iade talep edilemez.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 3: Yazılım Etiketi ve Güvenlik -->
-        <div class="contract-card-section">
-          <div class="contract-section-header">
-            <div class="section-icon-box">
-              <i data-lucide="lock"></i>
-            </div>
-            <h2 class="contract-section-title">Yazılım Etiketi ve Güvenlik</h2>
-          </div>
-
-          <div class="contract-items-list">
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#a855f7;"></i>
-                <span>Tersine Mühendislik</span>
-              </div>
-              <p class="contract-item-text">
-                Yazılımı cracklemeye çalışmak, tersine mühendislik (reverse engineering) yapmak veya dosyaları paylaşmak kesinlikle yasaktır. Bu durumun tespiti halinde lisansınız kalıcı olarak iptal edilir ve sunucudan süresiz uzaklaştırılırsınız.
-              </p>
-            </div>
-
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#a855f7;"></i>
-                <span>HWID Kilidi</span>
-              </div>
-              <p class="contract-item-text">
-                Lisans anahtarları (key) tek bir bilgisayara tanımlanır. İzinsiz HWID sıfırlama talepleri veya lisansın başkasına devredilmesi yasaktır.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 4: Davranış Kuralları -->
-        <div class="contract-card-section">
-          <div class="contract-section-header">
-            <div class="section-icon-box cyan">
-              <i data-lucide="message-square"></i>
-            </div>
-            <h2 class="contract-section-title">Davranış Kuralları</h2>
-          </div>
-
-          <div class="contract-items-list">
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#2dd4bf;"></i>
-                <span>Destek Talebi (Ticket)</span>
-              </div>
-              <p class="contract-item-text">
-                Destek ekibine karşı küfür, hakaret veya aşağılayıcı üslup kullanmak; çözüm sürecini durdurur ve kalıcı olarak hizmet almanızı engeller.
-              </p>
-            </div>
-
-            <div class="contract-item-row">
-              <div class="contract-item-label">
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:#2dd4bf;"></i>
-                <span>Spam</span>
-              </div>
-              <p class="contract-item-text">
-                Destek kanallarında veya yetkililere özelden sürekli mesaj (spam) atmak yasaktır. Sıranızı sabırla beklemelisiniz.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 5: Güncellemeler ve Fix Durumu -->
-        <div class="contract-card-section">
-          <div class="contract-section-header">
-            <div class="section-icon-box">
-              <i data-lucide="refresh-cw"></i>
-            </div>
-            <h2 class="contract-section-title">Güncellemeler ve Fix Durumu</h2>
-          </div>
-
-          <div class="contract-items-list">
-            <div class="contract-item-row">
-              <p class="contract-item-text" style="font-size: 0.95rem;">
-                Oyun güncellemeleri geldiğinde yazılımlar güvenliğiniz için bakıma alınabilir. Bakım süreleri boyunca sabırlı olmanız beklenir. Uzun süreli bakımlarda (24 saat üzeri) genellikle süre telafisi yapılmaktadır, müşterilerimiz bu süre boyunca beklemek zorundadır.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Önemli Hatırlatma Callout Box -->
-        <div class="important-notice-box">
-          <div class="notice-title">
-            <i data-lucide="alert-triangle" style="width:22px;height:22px;color:#ef4444;"></i>
-            <span>Önemli Hatırlatma</span>
-          </div>
-          
-          <ul class="notice-list">
-            <li>
-              <span class="bullet">•</span>
-              <span><strong>HWİD reset ücreti vardır.</strong></span>
-            </li>
-            <li>
-              <span class="bullet">•</span>
-              <span><strong>Kurallara uymayan kullanıcıların lisansları, ücret iadesi yapılmaksızın askıya alınma hakkına sahiptir.</strong></span>
-            </li>
-          </ul>
+        <!-- 2. Full Page Kurucu Management Dashboard -->
+        <div id="kurucuDashboardWrapper" class="kurucu-full-card" style="display:none;">
+          <div id="kurucuPageDirectContainer"></div>
         </div>
 
       </div>

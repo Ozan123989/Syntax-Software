@@ -1,0 +1,79 @@
+{
+  "tickets": {
+    "syntax_chat_user_caneryildiz": {
+      "chatKey": "syntax_chat_user_caneryildiz",
+      "ticket_number": 1003,
+      "username": "caneryildiz",
+      "fullName": "Caner Yıldız",
+      "discord_thread_id": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T01:35:46.905026",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Selamlar yetkiliye baglanmak istiyorum, Valorant hilesini nasil kuracagim?",
+          "time": "Bugün 01:35",
+          "timestamp": 1790030146.906023
+        },
+        {
+          "sender": "staff",
+          "text": "Merhaba Caner Bey! Discord destek talebiniz alindi. Kurulum adimlari ozel mesaj ile Discord'dan da iletilmistir.",
+          "time": "Bugün 01:35",
+          "timestamp": 1790030148.9297938
+        }
+      ]
+    },
+    "syntax_chat_user_noxy": {
+      "chatKey": "syntax_chat_user_noxy",
+      "ticket_number": 1004,
+      "username": "NOXY",
+      "fullName": "NOXY",
+      "discord_thread_id": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T03:00:24.120873",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "[Kategori: Satın Alım & Lisans] c",
+          "time": "Bugün 03:00",
+          "timestamp": 1790035224.1208735
+        },
+        {
+          "sender": "user",
+          "text": "merhaba",
+          "time": "Bugün 03:00",
+          "timestamp": 1790035227.9355743
+        },
+        {
+          "sender": "user",
+          "text": "🔑 HWID sıfırlama veya lisans anahtarı aktivasyon yardımı rica ediyorum.",
+          "time": "Bugün 03:01",
+          "timestamp": 1790035273.4155247
+        }
+      ]
+    },
+    "syntax_chat_anonymous": {
+      "chatKey": "syntax_chat_anonymous",
+      "ticket_number": 1005,
+      "username": "vxzv",
+      "fullName": "Ziyaretçi (Giriş Yapılmamış)",
+      "discord_thread_id": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T03:08:03.384291",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "[Kategori: Satın Alım & Lisans] sxf",
+          "time": "Bugün 03:08",
+          "timestamp": 1790035683.3844826
+        }
+      ]
+    }
+  },
+  "meta": {
+    "next_ticket_id": 1006,
+    "last_hourly_check": "2026-09-22 09:59:56",
+    "last_hourly_status": "OK",
+    "discord_latency_ms": 0.0
+  }
+}

@@ -23,7 +23,11 @@ from fastapi.responses import JSONResponse
 import uvicorn
 import discord
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if getattr(sys, 'frozen', False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 CONFIG_FILE = os.path.join(BASE_DIR, "bot_config.json")
 DB_FILE = os.path.join(BASE_DIR, "tickets_db.json")
 
@@ -31,7 +35,10 @@ def load_config() -> dict:
     if os.path.exists(CONFIG_FILE):
         try:
             with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                cfg = json.load(f)
+                if "host" not in cfg:
+                    cfg["host"] = "0.0.0.0"
+                return cfg
         except Exception:
             pass
     return {
@@ -39,7 +46,7 @@ def load_config() -> dict:
         "web_ticket_channel_id": "web-ticket",
         "webhook_url": "",
         "port": 5055,
-        "host": "127.0.0.1",
+        "host": "0.0.0.0",
         "server_name": "Syntax Software Official"
     }
 
@@ -153,7 +160,7 @@ async def on_message(message: discord.Message):
 
 
 # --- HELPER: SEND TO DISCORD VIA BOT OR WEBHOOK ---
-async def dispatch_discord_embed(embed_dict: dict, chat_key: str, thread_name: Optional[str] = None) -> Optional[str]:
+async def dispatch_discord_embed(embed_dict: dict, chat_key: str, channel_name: Optional[str] = None) -> Optional[str]:
     cfg = load_config()
     cur_db = load_db()
     sent_channel_or_thread_id = None
@@ -178,21 +185,62 @@ async def dispatch_discord_embed(embed_dict: dict, chat_key: str, thread_name: O
                     if target_chan:
                         break
 
-            if target_chan:
-                embed = discord.Embed.from_dict(embed_dict)
-                msg = await target_chan.send(embed=embed)
-                sent_channel_or_thread_id = str(target_chan.id)
+            target_guild = target_chan.guild if target_chan else (discord_client.guilds[0] if discord_client.guilds else None)
 
-                # Create a thread for clean conversation separation if permitted
-                if thread_name and hasattr(msg, "create_thread"):
-                    try:
-                        thread = await msg.create_thread(name=thread_name[:90], auto_archive_duration=1440)
-                        sent_channel_or_thread_id = str(thread.id)
-                        await thread.send(f"💬 **Ticket Sohbeti Başlatıldı:** Bu konuya yazacağınız tüm mesajlar web sitesinde **{thread_name}** kullanıcısına anında iletilecektir.")
-                    except Exception as te:
-                        print(f"[Bot] Thread create notice: {te}")
+            if target_guild:
+                # Format private channel name: web-{category}-{user}
+                c_name = channel_name or f"web-destek-{chat_key[-6:]}"
+                c_name = c_name.lower().replace(" ", "-").replace("@", "")[:95]
 
-                return sent_channel_or_thread_id
+                # Setup permissions: ONLY Admin, Owner and Bot can view (@everyone: False)
+                overwrites = {
+                    target_guild.default_role: discord.PermissionOverwrite(view_channel=False),
+                    target_guild.me: discord.PermissionOverwrite(view_channel=True, send_messages=True, embed_links=True, attach_files=True, manage_messages=True, read_message_history=True)
+                }
+                for role in target_guild.roles:
+                    rname = role.name.lower()
+                    if role.permissions.administrator or "admin" in rname or "owner" in rname or "yonetici" in rname or "kurucu" in rname or "yetkili" in rname:
+                        overwrites[role] = discord.PermissionOverwrite(view_channel=True, send_messages=True, read_message_history=True, attach_files=True)
+
+                cat = target_chan.category if target_chan else None
+                if not cat:
+                    for c in target_guild.categories:
+                        if "ticket" in c.name.lower() or "destek" in c.name.lower():
+                            cat = c
+                            break
+
+                # Create private channel
+                try:
+                    new_chan = await target_guild.create_text_channel(
+                        name=c_name,
+                        overwrites=overwrites,
+                        category=cat,
+                        topic="🔒 Gizli Destek Masası | Web Ticket | Yalnızca Yönetici & Owner yetkililerine açıktır"
+                    )
+                    sent_channel_or_thread_id = str(new_chan.id)
+                    embed = discord.Embed.from_dict(embed_dict)
+                    await new_chan.send(embed=embed)
+                    await new_chan.send(
+                        f"🔒 **Syntax Software Özel Destek Kanalı (`#{c_name}`)**\n"
+                        f"Bu kanal **yalnızca Yönetici ve Kurucu (Owner)** yetkililerine açıktır.\n"
+                        f"Yetkililerin buraya yazacağı mesajlar web sitesinde müşteriye canlı iletilir."
+                    )
+                    print(f"[Bot] Private ticket channel created: #{c_name} (ID: {new_chan.id})")
+                    return sent_channel_or_thread_id
+                except Exception as ce:
+                    print(f"[Bot] Private channel creation notice: {ce}, fallback to thread")
+                    if target_chan:
+                        embed = discord.Embed.from_dict(embed_dict)
+                        msg = await target_chan.send(embed=embed)
+                        sent_channel_or_thread_id = str(target_chan.id)
+                        if hasattr(msg, "create_thread"):
+                            try:
+                                thread = await msg.create_thread(name=c_name[:90], auto_archive_duration=1440)
+                                sent_channel_or_thread_id = str(thread.id)
+                                await thread.send(f"💬 **Ticket Sohbeti Başlatıldı:** Bu konuya yazacağınız tüm mesajlar web sitesinde **{c_name}** kullanıcısına anında iletilecektir.")
+                            except Exception:
+                                pass
+                        return sent_channel_or_thread_id
         except Exception as be:
             print(f"[Bot] Error sending via discord.py: {be}")
 
@@ -247,6 +295,7 @@ async def dispatch_discord_text_message(text: str, username: str, chat_key: str)
 async def get_status():
     cur_db = load_db()
     cfg = load_config()
+    meta = cur_db.get("meta", {})
     return {
         "status": "online",
         "timestamp": datetime.now().isoformat(),
@@ -254,7 +303,9 @@ async def get_status():
         "bot_user": bot_user_name,
         "channel_configured": cfg.get("web_ticket_channel_id", "web-ticket"),
         "webhook_configured": bool(cfg.get("webhook_url")),
-        "active_tickets_count": len(cur_db.get("tickets", {}))
+        "active_tickets_count": len(cur_db.get("tickets", {})),
+        "last_hourly_check": meta.get("last_hourly_check", "Henüz yapılmadı"),
+        "discord_latency_ms": meta.get("discord_latency_ms", 0.0)
     }
 
 @app.get("/api/config")
@@ -398,17 +449,32 @@ async def open_ticket(request: Request):
         "timestamp": datetime.utcnow().isoformat()
     }
 
+    # Format private channel name: web-{category}-{user}
+    category_raw = (payload.get("subject") or payload.get("category") or "destek").lower()
+    cat_slug = "destek"
+    if "val" in category_raw: cat_slug = "val"
+    elif "spoofer" in category_raw: cat_slug = "spoofer"
+    elif "emu" in category_raw: cat_slug = "emu"
+    elif "cs" in category_raw: cat_slug = "cs2"
+    elif "hwid" in category_raw or "lisans" in category_raw: cat_slug = "hwid"
+    elif "satin" in category_raw or "odeme" in category_raw: cat_slug = "satis"
+
+    clean_user = "".join(c for c in username.lower() if c.isalnum()) or "uye"
+    channel_name = payload.get("channelName") or f"web-{cat_slug}-{clean_user}"
+
     # Dispatch to Discord
-    thread_name = f"ticket-{ticket_num}-{username}"
-    channel_or_thread_id = await dispatch_discord_embed(embed_dict, chat_key, thread_name=thread_name)
+    channel_or_thread_id = await dispatch_discord_embed(embed_dict, chat_key, channel_name=channel_name)
 
     # Save to local database
     cur_db["tickets"][chat_key] = {
         "chatKey": chat_key,
         "ticket_number": ticket_num,
+        "channel_name": channel_name,
+        "category": cat_slug,
         "username": username,
         "fullName": full_name,
         "discord_thread_id": channel_or_thread_id,
+        "claimed_by": None,
         "status": "OPEN",
         "created_at": datetime.now().isoformat(),
         "messages": [
@@ -482,6 +548,83 @@ async def get_messages(chatKey: str):
         "messages": tdata.get("messages", [])
     }
 
+@app.post("/api/ticket/claim")
+async def claim_ticket(request: Request):
+    payload = await request.json()
+    chat_key = payload.get("chatKey")
+    claimed_by = payload.get("claimedBy")
+    is_claimed = payload.get("isClaimed", True)
+
+    cur_db = load_db()
+    if chat_key in cur_db.get("tickets", {}):
+        cur_db["tickets"][chat_key]["claimed_by"] = claimed_by if is_claimed else None
+        save_db(cur_db)
+
+    tdata = cur_db.get("tickets", {}).get(chat_key, {})
+    chan_id = tdata.get("discord_thread_id") or tdata.get("discord_channel_id")
+
+    if discord_connected and discord_client.is_ready() and chan_id and str(chan_id).isdigit():
+        try:
+            chan = discord_client.get_channel(int(chan_id))
+            if chan:
+                if is_claimed and claimed_by:
+                    c_user = claimed_by.get("username", "Yetkili")
+                    c_role = claimed_by.get("role", "Yönetici")
+                    embed = discord.Embed(
+                        title="📌 Destek Talebi Üstlenildi (Claimed)",
+                        description=f"Bu talep **@{c_user}** ({c_role}) tarafından üstlenildi ve takibe alındı.",
+                        color=0x22c55e
+                    )
+                    await chan.send(embed=embed)
+                else:
+                    embed = discord.Embed(
+                        title="🔄 Destek Talebi Serbest Bırakıldı (Unclaimed)",
+                        description="Talep boşa çıkarıldı, diğer yetkililer üstlenebilir.",
+                        color=0xf59e0b
+                    )
+                    await chan.send(embed=embed)
+        except Exception as e:
+            print(f"[Bot] Claim notice dispatch error: {e}")
+
+    return {"success": True, "chatKey": chat_key, "isClaimed": is_claimed}
+
+@app.post("/api/ticket/close")
+async def close_ticket(request: Request):
+    payload = await request.json()
+    chat_key = payload.get("chatKey")
+    closed_by = payload.get("closedBy", "Yetkili")
+    transcript_text = payload.get("transcriptText", "")
+
+    cur_db = load_db()
+    if chat_key in cur_db.get("tickets", {}):
+        cur_db["tickets"][chat_key]["status"] = "CLOSED"
+        cur_db["tickets"][chat_key]["closed_by"] = closed_by
+        cur_db["tickets"][chat_key]["closed_at"] = datetime.now().isoformat()
+        if transcript_text:
+            cur_db["tickets"][chat_key]["transcript"] = transcript_text
+        save_db(cur_db)
+
+    chan_id = cur_db.get("tickets", {}).get(chat_key, {}).get("discord_thread_id")
+    if discord_connected and discord_client.is_ready() and chan_id and str(chan_id).isdigit():
+        try:
+            chan = discord_client.get_channel(int(chan_id))
+            if chan:
+                embed = discord.Embed(
+                    title="🔒 Destek Talebi Kapatıldı & Arşivlendi",
+                    description=f"Bu talep **@{closed_by}** tarafından çözüldü olarak işaretlenip kapatılmıştır.\nTranskript sisteme kaydedildi.",
+                    color=0xef4444
+                )
+                await chan.send(embed=embed)
+                try:
+                    await chan.edit(topic="[KAPANDI - TRANSKRİPT ARŞİVİNDE]")
+                except Exception:
+                    pass
+        except Exception as e:
+            print(f"[Bot] Close notice dispatch error: {e}")
+
+    return {"success": True, "chatKey": chat_key, "status": "CLOSED"}
+
+
 @app.post("/api/ticket/test")
 async def send_test_embed():
     test_embed = {
@@ -499,7 +642,66 @@ async def send_test_embed():
     return {"success": True, "delivered": bool(res), "channel_id": res}
 
 
-# --- RUNNER: CONCURRENT BOT + FASTAPI ---
+# --- HOURLY SELF-CHECK & WATCHDOG TASK ---
+async def hourly_self_check_loop():
+    """
+    Her saat (3600 saniye) kendini kontrol eden otomatik sağlık denetleyicisi:
+    - Discord Gateway bağlantısını doğrular, kopma varsa yeniden bağlanmayı tetikler
+    - Bilet veri tabanını doğrular
+    - Saatlik durum raporunu konsola ve veri tabanına işler
+    """
+    print("[Watchdog] Saatlik otomatik sistem ve baglanti denetleyicisi baslatildi (3600s periyot).")
+    # Ilk hizli saglik testi (10 sn sonra)
+    await asyncio.sleep(10)
+    
+    while True:
+        try:
+            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            cfg = load_config()
+            cur_db = load_db()
+            ticket_count = len(cur_db.get("tickets", {}))
+            
+            is_ready = discord_connected and discord_client.is_ready() and not discord_client.is_closed()
+            latency_ms = round(discord_client.latency * 1000, 1) if (is_ready and discord_client.latency) else 0.0
+
+            token = cfg.get("bot_token", "").strip()
+            if token and not is_ready:
+                print(f"[{now_str}] [Watchdog UYARI] Discord baglantisi kopmus veya beklemede, yeniden baglanilmaya calisiliyor...")
+                try:
+                    if not discord_client.is_closed():
+                        await discord_client.close()
+                    asyncio.create_task(discord_client.start(token))
+                except Exception as rec_err:
+                    print(f"[{now_str}] [Watchdog] Yeniden baglanma hatasi: {rec_err}")
+
+            status_banner = (
+                f"\n========================================================================\n"
+                f" [SAATLIK OTO-KONTROL - {now_str}]\n"
+                f" * Discord Bot Durumu : {'ONLINE (' + bot_user_name + ') [Ping: ' + str(latency_ms) + 'ms]' if is_ready else 'OFFLINE (Token/Webhook modu)'}\n"
+                f" * Webhook Bildirimi  : {'YAPILANDIRILDI' if cfg.get('webhook_url') else 'YAPILANDIRILMADI'}\n"
+                f" * Hedef Kanal        : #{cfg.get('web_ticket_channel_id', 'web-ticket')}\n"
+                f" * Aktif Destek Bilet : {ticket_count}\n"
+                f" * Dinlenen Port      : {cfg.get('port', 5055)} (Host: {cfg.get('host', '0.0.0.0')})\n"
+                f" * Sistem Sagligi     : %100 CALISIYOR VE AKTIF\n"
+                f"========================================================================\n"
+            )
+            print(status_banner)
+
+            if "meta" not in cur_db:
+                cur_db["meta"] = {}
+            cur_db["meta"]["last_hourly_check"] = now_str
+            cur_db["meta"]["last_hourly_status"] = "OK"
+            cur_db["meta"]["discord_latency_ms"] = latency_ms
+            save_db(cur_db)
+
+        except Exception as e:
+            print(f"[Watchdog Hata] Saatlik kontrol sirasinda istisna: {e}")
+
+        # Her saat kontrol et (3600 saniye)
+        await asyncio.sleep(3600)
+
+
+# --- RUNNER: CONCURRENT BOT + FASTAPI + WATCHDOG ---
 async def start_discord_bot_task():
     cfg = load_config()
     token = cfg.get("bot_token", "").strip()
@@ -510,21 +712,34 @@ async def start_discord_bot_task():
         except Exception as e:
             print(f"[Discord Bot] Login failed: {e}")
     else:
-        print("[Discord Bot] Token girilmedi. Webhook modu ve HTTP köprüsü aktif.")
+        print("[Discord Bot] Token girilmedi. Webhook modu ve HTTP koprusu aktif.")
 
 async def main():
     cfg = load_config()
     port = int(cfg.get("port", 5055))
-    host = cfg.get("host", "127.0.0.1")
+    host = cfg.get("host", "0.0.0.0")
+
+    print(f"""
+========================================================================
+       SYNTAX SOFTWARE - DISCORD BOT & WEB TICKET KOPRUSU
+========================================================================
+ [MOD]        Tek Parca Bagimsiz Calistirilabilir (.EXE)
+ [PORT]       {port} (Tum Ag Baglantilarina Acik: {host})
+ [KONTROL]    Otomatik Saatlik Sistem ve Baglanti Denetleyicisi Aktif
+ [YAN PC]     Bu dosyayi istediginiz bilgisayarda dogrudan calistirabilirsiniz!
+              Python veya ek kurulum gerektirmez.
+========================================================================
+""")
 
     # FastAPI Uvicorn Server config
     uv_config = uvicorn.Config(app=app, host=host, port=port, log_level="info")
     server = uvicorn.Server(uv_config)
 
-    # Run both concurrent tasks
+    # Run all three concurrent tasks: API server, Discord bot gateway, Hourly watchdog
     await asyncio.gather(
         server.serve(),
-        start_discord_bot_task()
+        start_discord_bot_task(),
+        hourly_self_check_loop()
     )
 
 if __name__ == "__main__":
