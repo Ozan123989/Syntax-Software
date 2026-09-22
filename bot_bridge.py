@@ -159,11 +159,74 @@ async def on_message(message: discord.Message):
         print(f"[Discord -> Web] Forwarded reply from {message.author.display_name} to {matched_chat_key}: {content}")
 
 
+# --- CATEGORY DEFINITIONS & DYNAMIC DISCORD CATEGORY ROUTING ---
+CATEGORY_MAP = {
+    "satis": {
+        "title": "Satın Alım & Sipariş Kontrolü",
+        "badge": "🛒 SATIN ALIM & SİPARİŞ",
+        "discord_category": "🛒 │ SATIN ALIM & SİPARİŞ",
+        "keywords": ["satın", "satin", "satış", "satis", "siparis", "sipariş", "fiyat", "odeme", "ödeme", "sepet", "kart", "alım", "alim"],
+        "color": 0xf59e0b,  # Amber / Gold
+        "emoji": "🛒",
+        "slug": "satis"
+    },
+    "hwid": {
+        "title": "Lisans Aktivasyonu & HWID Sıfırlama",
+        "badge": "🔑 LİSANS & HWID SIFIRLAMA",
+        "discord_category": "🔑 │ LİSANS & HWID TALEPLERİ",
+        "keywords": ["hwid", "lisans", "key", "anahtar", "reset", "sıfırla", "sifirla", "aktivasyon"],
+        "color": 0x3b82f6,  # Royal Blue
+        "emoji": "🔑",
+        "slug": "hwid"
+    },
+    "teknik": {
+        "title": "Teknik Destek, Kurulum & BIOS",
+        "badge": "🛠️ TEKNİK DESTEK & KURULUM",
+        "discord_category": "🛠️ │ TEKNİK DESTEK & KURULUM",
+        "keywords": ["teknik", "kurulum", "bios", "hvci", "hata", "calismiyor", "driver", "yardim", "yardım"],
+        "color": 0xa855f7,  # Purple
+        "emoji": "🛠️",
+        "slug": "teknik"
+    },
+    "durum": {
+        "title": "Yazılım Durumu & Undetected Bilgisi",
+        "badge": "🟢 YAZILIM DURUMU & UNDETECTED",
+        "discord_category": "🟢 │ YAZILIM GÜNCELLEME & DURUM",
+        "keywords": ["durum", "undetected", "ud", "ban", "guncel", "güncel", "valorant", "cs2", "vanguard", "spoofer", "emu", "slotted"],
+        "color": 0x10b981,  # Emerald Green
+        "emoji": "🟢",
+        "slug": "durum"
+    },
+    "genel": {
+        "title": "Genel Sorular & Diğer Konular",
+        "badge": "❓ GENEL DESTEK TALEBİ",
+        "discord_category": "❓ │ GENEL DESTEK TALEPLERİ",
+        "keywords": ["genel", "diger", "diğer", "soru", "destek", "bilgi"],
+        "color": 0x06b6d4,  # Cyan
+        "emoji": "❓",
+        "slug": "genel"
+    }
+}
+
+def resolve_ticket_category(raw_cat: str) -> dict:
+    c = (raw_cat or "").lower()
+    for slug, info in CATEGORY_MAP.items():
+        if any(kw in c for kw in info["keywords"]):
+            return info
+    return CATEGORY_MAP["genel"]
+
 # --- HELPER: SEND TO DISCORD VIA BOT OR WEBHOOK ---
-async def dispatch_discord_embed(embed_dict: dict, chat_key: str, channel_name: Optional[str] = None) -> Optional[str]:
+async def dispatch_discord_embed(
+    embed_dict: dict,
+    chat_key: str,
+    channel_name: Optional[str] = None,
+    cat_info: Optional[dict] = None
+) -> Optional[str]:
     cfg = load_config()
     cur_db = load_db()
     sent_channel_or_thread_id = None
+    if not cat_info:
+        cat_info = CATEGORY_MAP["genel"]
 
     # Method 1: discord.py Bot Client if connected
     if discord_connected and discord_client.is_ready():
@@ -189,7 +252,7 @@ async def dispatch_discord_embed(embed_dict: dict, chat_key: str, channel_name: 
 
             if target_guild:
                 # Format private channel name: web-{category}-{user}
-                c_name = channel_name or f"web-destek-{chat_key[-6:]}"
+                c_name = channel_name or f"web-{cat_info['slug']}-{chat_key[-6:]}"
                 c_name = c_name.lower().replace(" ", "-").replace("@", "")[:95]
 
                 # Setup permissions: ONLY Admin, Owner and Bot can view (@everyone: False)
@@ -202,30 +265,47 @@ async def dispatch_discord_embed(embed_dict: dict, chat_key: str, channel_name: 
                     if role.permissions.administrator or "admin" in rname or "owner" in rname or "yonetici" in rname or "kurucu" in rname or "yetkili" in rname:
                         overwrites[role] = discord.PermissionOverwrite(view_channel=True, send_messages=True, read_message_history=True, attach_files=True)
 
-                cat = target_chan.category if target_chan else None
-                if not cat:
-                    for c in target_guild.categories:
-                        if "ticket" in c.name.lower() or "destek" in c.name.lower():
-                            cat = c
-                            break
+                # DYNAMIC DISCORD CATEGORY: Route channel to its specific category folder!
+                target_cat = None
+                target_cat_name = cat_info["discord_category"]
 
-                # Create private channel
+                for c in target_guild.categories:
+                    c_name_lower = c.name.lower()
+                    if cat_info["slug"] in c_name_lower or any(kw in c_name_lower for kw in cat_info["keywords"]):
+                        target_cat = c
+                        break
+
+                # If category does not exist in Discord server yet, dynamically create it!
+                if not target_cat:
+                    try:
+                        target_cat = await target_guild.create_category(
+                            name=target_cat_name,
+                            overwrites=overwrites,
+                            position=len(target_guild.categories)
+                        )
+                        print(f"[Discord Bot] New Discord Category created: '{target_cat_name}'")
+                    except Exception as ce:
+                        print(f"[Discord Bot] Notice creating category '{target_cat_name}': {ce}")
+                        target_cat = target_chan.category if target_chan else None
+
+                # Create private channel inside the specific category
                 try:
                     new_chan = await target_guild.create_text_channel(
                         name=c_name,
                         overwrites=overwrites,
-                        category=cat,
-                        topic="🔒 Gizli Destek Masası | Web Ticket | Yalnızca Yönetici & Owner yetkililerine açıktır"
+                        category=target_cat,
+                        topic=f"🔒 {cat_info['badge']} | Web Ticket | Yalnızca Yönetici & Owner yetkililerine açıktır"
                     )
                     sent_channel_or_thread_id = str(new_chan.id)
                     embed = discord.Embed.from_dict(embed_dict)
                     await new_chan.send(embed=embed)
                     await new_chan.send(
                         f"🔒 **Syntax Software Özel Destek Kanalı (`#{c_name}`)**\n"
+                        f"📁 **Discord Kategorisi:** `{cat_info['discord_category']}`\n"
                         f"Bu kanal **yalnızca Yönetici ve Kurucu (Owner)** yetkililerine açıktır.\n"
                         f"Yetkililerin buraya yazacağı mesajlar web sitesinde müşteriye canlı iletilir."
                     )
-                    print(f"[Bot] Private ticket channel created: #{c_name} (ID: {new_chan.id})")
+                    print(f"[Bot] Private ticket channel created in '{target_cat_name}': #{c_name} (ID: {new_chan.id})")
                     return sent_channel_or_thread_id
                 except Exception as ce:
                     print(f"[Bot] Private channel creation notice: {ce}, fallback to thread")
@@ -237,7 +317,7 @@ async def dispatch_discord_embed(embed_dict: dict, chat_key: str, channel_name: 
                             try:
                                 thread = await msg.create_thread(name=c_name[:90], auto_archive_duration=1440)
                                 sent_channel_or_thread_id = str(thread.id)
-                                await thread.send(f"💬 **Ticket Sohbeti Başlatıldı:** Bu konuya yazacağınız tüm mesajlar web sitesinde **{c_name}** kullanıcısına anında iletilecektir.")
+                                await thread.send(f"💬 **Ticket Sohbeti [{cat_info['badge']}]:** Bu konuya yazacağınız tüm mesajlar web sitesinde **{c_name}** kullanıcısına anında iletilecektir.")
                             except Exception:
                                 pass
                         return sent_channel_or_thread_id
@@ -250,7 +330,7 @@ async def dispatch_discord_embed(embed_dict: dict, chat_key: str, channel_name: 
         try:
             async with httpx.AsyncClient(timeout=6.0) as client:
                 res = await client.post(webhook_url, json={
-                    "username": "Syntax Software Bot",
+                    "username": f"Syntax Bot • [{cat_info['badge']}]",
                     "avatar_url": "https://i.postimg.cc/mD8Z8hP3/syntax-logo.png",
                     "embeds": [embed_dict]
                 })
@@ -265,6 +345,8 @@ async def dispatch_discord_text_message(text: str, username: str, chat_key: str)
     cur_db = load_db()
     tdata = cur_db.get("tickets", {}).get(chat_key, {})
     thread_id = tdata.get("discord_thread_id") or tdata.get("discord_channel_id")
+    cat_info = resolve_ticket_category(tdata.get("category") or tdata.get("category_name") or "genel")
+    ticket_num = tdata.get("ticket_number", "TICKET")
 
     if discord_connected and discord_client.is_ready() and thread_id and thread_id.isdigit():
         try:
@@ -279,11 +361,10 @@ async def dispatch_discord_text_message(text: str, username: str, chat_key: str)
     webhook_url = cfg.get("webhook_url", "").strip()
     if webhook_url and webhook_url.startswith("http"):
         try:
-            ticket_num = tdata.get("ticket_number", "TICKET")
             async with httpx.AsyncClient(timeout=6.0) as client:
                 await client.post(webhook_url, json={
-                    "username": f"Web: {username}",
-                    "content": f"💬 **[#{ticket_num} - {username}]**: {text}"
+                    "username": f"Web: {username} [{cat_info['emoji']} {cat_info['slug'].upper()}]",
+                    "content": f"💬 **[#{ticket_num} - {username} | {cat_info['badge']}]:** {text}"
                 })
         except Exception as we:
             print(f"[Webhook] Text message fallback notice: {we}")
@@ -386,16 +467,28 @@ async def open_ticket(request: Request):
     else:
         orders_str = "Sipariş kaydı bulunmuyor."
 
+    # Resolve category info first
+    category_raw = payload.get("subject") or payload.get("category") or "genel"
+    cat_info = resolve_ticket_category(category_raw)
+
+    clean_user = "".join(c for c in username.lower() if c.isalnum()) or "uye"
+    channel_name = payload.get("channelName") or f"web-{cat_info['slug']}-{clean_user}"
+
     # Build Secret Discord Staff Embed
     # NOTE: This embed is sent EXCLUSIVELY to Discord. It is NEVER sent to the user on web.
     embed_dict = {
-        "title": f"🎫 YENİ DESTEK BİLETİ — #{ticket_num} ({username})",
+        "title": f"🎫 YENİ DESTEK BİLETİ [{cat_info['badge']}] — #{ticket_num} ({username})",
         "description": (
-            f"Web sitesi canlı destek penceresinden yeni bir bilet açıldı.\n"
+            f"Web sitesi canlı destek penceresinden **{cat_info['title']}** kategorisinde yeni bir bilet açıldı.\n"
             f"**Yetkili Notu:** Müşterinin tüm kayıt ve hesap dosyası aşağıdadır (Webde gizlidir)."
         ),
-        "color": 0x10b981,  # Emerald Green
+        "color": cat_info["color"],
         "fields": [
+            {
+                "name": "📁 Bilet Kategorisi & Discord Bölümü",
+                "value": f"**{cat_info['title']}**\nKategori: `{cat_info['discord_category']}` ➔ Kanal: `#{channel_name}`",
+                "inline": False
+            },
             {
                 "name": "👤 Ad Soyad & Kullanıcı Adı",
                 "value": f"**{full_name}** (`@{username}`)",
@@ -443,34 +536,29 @@ async def open_ticket(request: Request):
             }
         ],
         "footer": {
-            "text": f"Syntax Software • Ticket #{ticket_num} • Yetkililer Discord'dan yanıt verdiğinde web'e iletilir",
+            "text": f"Syntax Software • Ticket #{ticket_num} • [{cat_info['badge']}] • Discord Canlı Köprü",
             "icon_url": "https://i.postimg.cc/mD8Z8hP3/syntax-logo.png"
         },
         "timestamp": datetime.utcnow().isoformat()
     }
 
-    # Format private channel name: web-{category}-{user}
-    category_raw = (payload.get("subject") or payload.get("category") or "destek").lower()
-    cat_slug = "destek"
-    if "val" in category_raw: cat_slug = "val"
-    elif "spoofer" in category_raw: cat_slug = "spoofer"
-    elif "emu" in category_raw: cat_slug = "emu"
-    elif "cs" in category_raw: cat_slug = "cs2"
-    elif "hwid" in category_raw or "lisans" in category_raw: cat_slug = "hwid"
-    elif "satin" in category_raw or "odeme" in category_raw: cat_slug = "satis"
-
-    clean_user = "".join(c for c in username.lower() if c.isalnum()) or "uye"
-    channel_name = payload.get("channelName") or f"web-{cat_slug}-{clean_user}"
-
-    # Dispatch to Discord
-    channel_or_thread_id = await dispatch_discord_embed(embed_dict, chat_key, channel_name=channel_name)
+    # Dispatch to Discord with category routing
+    channel_or_thread_id = await dispatch_discord_embed(
+        embed_dict,
+        chat_key,
+        channel_name=channel_name,
+        cat_info=cat_info
+    )
 
     # Save to local database
     cur_db["tickets"][chat_key] = {
         "chatKey": chat_key,
         "ticket_number": ticket_num,
         "channel_name": channel_name,
-        "category": cat_slug,
+        "category": cat_info["slug"],
+        "category_name": cat_info["title"],
+        "category_discord": cat_info["discord_category"],
+        "category_badge": cat_info["badge"],
         "username": username,
         "fullName": full_name,
         "discord_thread_id": channel_or_thread_id,
@@ -492,8 +580,11 @@ async def open_ticket(request: Request):
         "success": True,
         "ticketNumber": ticket_num,
         "chatKey": chat_key,
+        "channelName": channel_name,
+        "category": cat_info["slug"],
+        "category_discord": cat_info["discord_category"],
         "discord_notified": True,
-        "message": "Ticket Discord #web-ticket kanalına başarıyla iletildi."
+        "message": f"Ticket Discord '{cat_info['discord_category']}' kategorisinde #{channel_name} kanalına iletildi."
     }
 
 @app.post("/api/ticket/message")

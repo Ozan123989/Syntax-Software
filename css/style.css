@@ -218,28 +218,38 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 1px;
 }
 
-.logo-title, .logo-title-stacked {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.88rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: #fff;
-  line-height: 1.08;
-}
-
-.logo-sub, .logo-sub-stacked {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.58rem;
-  font-weight: 700;
-  color: #9ca3af;
-  letter-spacing: 0.05em;
+.logo-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  line-height: 1.1;
   text-transform: uppercase;
-  line-height: 1.15;
-  margin-top: 2px;
+}
+
+.logo-sub {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #a855f7;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.logo-title-stacked {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.logo-sub-stacked {
+  display: none !important;
 }
 
 .nav-text-stacked {
@@ -2492,13 +2502,13 @@ body.theme-bw .float-btn-theme svg {
 /* === ADVANCED SYNTAX LIVE CHAT & TICKET SYSTEM (DARK CYBERPUNK) === */
 .crisp-chat-widget {
   position: fixed;
-  bottom: 5.8rem;
+  bottom: 5.2rem;
   right: 2rem;
   left: auto !important;
   width: 410px;
   max-width: calc(100vw - 2.5rem);
-  height: 620px;
-  max-height: calc(100vh - 7.5rem);
+  height: 640px;
+  max-height: calc(100vh - 6rem);
   background: #0b0d18;
   border: 1px solid rgba(168, 85, 247, 0.35);
   border-radius: 20px;
@@ -2524,7 +2534,7 @@ body.theme-bw .float-btn-theme svg {
 .crisp-header {
   background: linear-gradient(135deg, #1b1238 0%, #10142b 60%, #0d1738 100%) !important;
   border-bottom: 1px solid rgba(168, 85, 247, 0.25);
-  padding: 1.1rem 1.25rem 1.25rem;
+  padding: 0.85rem 1.1rem 0.95rem;
   color: #ffffff;
   position: relative;
   text-align: center;
@@ -2593,18 +2603,18 @@ body.theme-bw .float-btn-theme svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.4rem;
 }
 
 .crisp-avatar-circle {
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 2px solid rgba(168, 85, 247, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: -10px;
+  margin-left: -8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   background: #13172c;
   color: #94a3b8;
@@ -2624,15 +2634,15 @@ body.theme-bw .float-btn-theme svg {
 }
 
 .crisp-header-title {
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   font-weight: 800;
   color: #ffffff;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
   letter-spacing: -0.01em;
 }
 
 .crisp-header-sub {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: #94a3b8;
   display: flex;
   align-items: center;
@@ -2650,16 +2660,16 @@ body.theme-bw .float-btn-theme svg {
 
 /* Live Ticket Status Pill */
 .crisp-ticket-status-pill {
-  margin: 0.6rem auto 0;
+  margin: 0.4rem auto 0;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  border: 1px solid rgba(168, 85, 247, 0.35);
   color: #34d399;
-  padding: 0.25rem 0.75rem;
+  padding: 0.22rem 0.7rem;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.70rem;
   font-weight: 700;
 }
 
@@ -3712,26 +3722,56 @@ body.theme-bw .float-btn-theme svg {
   }
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1440px) {
+  .nav-links {
+    flex-shrink: 1;
+    min-width: 0;
+    gap: 0.1rem;
+  }
+  .nav-link {
+    padding: 0.35rem 0.45rem;
+    font-size: 0.76rem;
+    gap: 0.25rem;
+  }
+  .nav-actions {
+    flex-shrink: 0 !important;
+    margin-left: auto;
+    gap: 0.3rem;
+  }
+  .nav-actions .btn-cart {
+    padding: 0.38rem 0.55rem;
+  }
+  .nav-actions .btn-cart span[data-i18n="cart"] {
+    display: none;
+  }
   .nav-actions .btn-discord-nav span,
   .nav-actions .btn-yt-nav span {
     display: none;
   }
   .nav-actions .btn-discord-nav,
   .nav-actions .btn-yt-nav {
-    padding: 0.5rem 0.65rem;
-    min-width: 36px;
+    padding: 0.4rem 0.5rem;
+    min-width: 32px;
     justify-content: center;
+  }
+  .nav-link-owner-secret {
+    padding: 0.35rem 0.55rem !important;
+    font-size: 0.76rem !important;
+    max-width: 110px;
+  }
+  .btn-user-pill-nav {
+    padding: 0.3rem 0.65rem 0.3rem 0.4rem;
+    font-size: 0.78rem;
+    max-width: 155px;
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1300px) {
   .nav-links {
-    display: none;
+    display: none !important;
   }
-  
   .mobile-toggle {
-    display: block;
+    display: flex !important;
   }
   
   .nav-actions .btn-discord-nav,
@@ -3758,42 +3798,321 @@ body.theme-bw .float-btn-theme svg {
   }
 }
 
-@media (max-width: 600px) {
+/* ==========================================================================
+   MOBILE FIRST RESPONSIVE BREAKPOINT (PHONES & TABLETS <= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 1. Global Viewport & Container */
+  body, html {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  .container {
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+  }
+
+  /* 2. Mobile Navbar */
+  .navbar {
+    height: 60px !important;
+  }
+  .navbar .container {
+    padding-left: 0.65rem !important;
+    padding-right: 0.65rem !important;
+    max-width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    overflow: visible !important;
+  }
+
+  /* Compact Brand Logo */
+  .logo-group {
+    gap: 0.4rem !important;
+    flex-shrink: 0 !important;
+  }
+  .brand-logo-img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .logo-title-stacked span {
+    font-size: 0.82rem !important;
+  }
+  .logo-sub-stacked {
+    display: none !important;
+  }
+
+  /* Hide quick tools (Search + Lang) from navbar row on mobile (they live in mobile drawer) */
+  .nav-quick-tools {
+    display: none !important;
+  }
+
+  /* Mobile Nav Actions Cluster */
+  .nav-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+  }
+
+  .nav-actions .btn-cart {
+    padding: 0.35rem 0.55rem !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    border-radius: 8px !important;
+  }
+  .nav-actions .btn-cart span[data-i18n="cart"] {
+    display: none !important;
+  }
+
+  /* Compact NOXY / Giriş Button */
+  .btn-panel-nav {
+    padding: 0.35rem 0.55rem !important;
+    font-size: 0.74rem !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    border-radius: 8px !important;
+    justify-content: center !important;
+  }
+  .btn-panel-nav span {
+    display: none !important;
+  }
+
+  .btn-user-pill-nav {
+    padding: 0.2rem 0.45rem 0.2rem 0.3rem !important;
+    font-size: 0.72rem !important;
+    max-width: 95px !important;
+    height: 34px !important;
+    gap: 0.3rem !important;
+  }
+  .btn-user-pill-nav .user-badge-tag,
+  .btn-user-pill-nav svg {
+    display: none !important;
+  }
+
+  .nav-link-owner-secret {
+    display: none !important;
+  }
+
+  /* Mobile Hamburger Toggle */
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: rgba(168, 85, 247, 0.14) !important;
+    border: 1px solid rgba(168, 85, 247, 0.4) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    z-index: 1005 !important;
+  }
+
+  /* Mobile Drawer */
+  .mobile-drawer {
+    top: 60px !important;
+    max-height: calc(100vh - 60px) !important;
+    overflow-y: auto !important;
+    padding: 1.25rem 1rem !important;
+    gap: 0.55rem !important;
+    z-index: 9999 !important;
+    background: rgba(10, 12, 22, 0.98) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+  }
+  .mobile-drawer .nav-link {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.65rem !important;
+  }
+
+  /* 3. Hero Section on Mobile */
+  .hero-section {
+    padding: 2rem 0 2.5rem !important;
+  }
+  .hero-container {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .hero-content {
+    text-align: center !important;
+    align-items: center !important;
+  }
   .hero-headline {
-    font-size: 2.2rem;
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
   }
-  
+  .hero-desc {
+    font-size: 0.86rem !important;
+    max-width: 100% !important;
+  }
   .hero-buttons {
-    flex-direction: column;
-    width: 100%;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.65rem !important;
   }
-  
-  .hero-buttons a {
-    width: 100%;
-    justify-content: center;
+  .hero-buttons a, .hero-buttons button {
+    width: 100% !important;
+    justify-content: center !important;
   }
-  
-  .checkbox-grid {
-    grid-template-columns: 1fr;
+
+  /* Cheat Panel Preview on Mobile */
+  .cheat-panel-preview {
+    width: 100% !important;
+    max-width: 100% !important;
   }
-  
+  .cheat-tabs-row {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 4px !important;
+  }
+  .cheat-tab-btn {
+    white-space: nowrap !important;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* 4. Products & Status Grid on Mobile */
+  .products-grid, .status-cards-grid, .showcase-grid-two, .showcase-grid-three {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  /* Bayi Page Layout on Mobile */
   .bayi-stats-duo {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
-  
   .bayi-stat-col:first-child {
-    border-right: none;
-    border-bottom: 1px solid var(--border-subtle);
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
   }
-  
   .discord-callout-banner {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: column !important;
+    text-align: center !important;
   }
-  
   .footer-inner {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 1.25rem !important;
+  }
+
+  /* 5. Live Chat & Ticket Widget on Mobile (Native App Fullscreen View) */
+  .crisp-chat-widget {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100% !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    z-index: 1000000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .crisp-header {
+    padding: 0.75rem 0.9rem !important;
+    border-radius: 0 !important;
+  }
+  .crisp-header-topbar {
+    margin-bottom: 0.35rem !important;
+  }
+  .crisp-avatars-trio {
+    margin-bottom: 0.25rem !important;
+  }
+  .crisp-avatar-circle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .crisp-header-title {
+    font-size: 0.95rem !important;
+  }
+  .crisp-header-sub {
+    font-size: 0.68rem !important;
+  }
+  .crisp-ticket-status-pill {
+    display: none !important;
+  }
+  .crisp-footer {
+    padding-bottom: max(0.85rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  /* 6. Auth & Owner Dashboard Modal on Mobile */
+  .syntax-auth-backdrop {
+    padding: 0 !important;
+  }
+  .syntax-auth-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    padding: 1.5rem 1rem !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+  }
+  .syntax-auth-card.dashboard-mode {
+    max-width: 100% !important;
+  }
+  .owner-tabs-nav {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+  }
+  .owner-tab-btn {
+    white-space: nowrap !important;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.76rem !important;
+  }
+  .owner-stat-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.6rem !important;
+  }
+
+  /* 7. Floating Action Buttons on Mobile */
+  .web-support-float-btn {
+    bottom: 1.25rem !important;
+    right: 1.25rem !important;
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.78rem !important;
+  }
+  .floating-widget-stack {
+    bottom: 1.25rem !important;
+    left: 1.25rem !important;
+    gap: 0.4rem !important;
+  }
+  .float-btn-whatsapp, .float-btn-discord {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .theme-switcher-pill {
+    bottom: 1.25rem !important;
+    left: 95px !important;
+  }
+
+  /* Hide floating buttons when Chat or Auth Modal is open so they never overlap */
+  body:has(.crisp-chat-widget.active) .web-support-float-btn,
+  body:has(.crisp-chat-widget.active) .floating-widget-stack,
+  body:has(.crisp-chat-widget.active) .theme-switcher-pill,
+  body:has(.syntax-auth-backdrop.open) .web-support-float-btn,
+  body:has(.syntax-auth-backdrop.open) .floating-widget-stack,
+  body:has(.syntax-auth-backdrop.open) .theme-switcher-pill {
+    display: none !important;
   }
 }
 
@@ -4359,9 +4678,13 @@ body.theme-bw .float-btn-theme svg {
   font-weight: 700;
   padding: 0.35rem 0.85rem 0.35rem 0.45rem;
   border-radius: 999px;
-  cursor: pointer;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 1002;
   transition: all 0.25s ease;
   box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+  user-select: none;
 }
 
 .btn-user-pill-nav:hover {
@@ -8215,10 +8538,51 @@ body.theme-bw .cheat-panel-watermark {
   color: #fff;
 }
 .ticket-create-form-wrap {
-  padding: 1.25rem 1rem;
+  padding: 1rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.8rem;
+  flex: 1 1 auto;
+  min-height: 0 !important;
+  max-height: 100%;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+}
+
+.crisp-body {
+  flex: 1 1 auto;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: #080911;
+}
+
+.ticket-create-form-wrap::-webkit-scrollbar,
+.crisp-body::-webkit-scrollbar {
+  width: 6px;
+}
+.ticket-create-form-wrap::-webkit-scrollbar-track,
+.crisp-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+.ticket-create-form-wrap::-webkit-scrollbar-thumb,
+.crisp-body::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.5);
+  border-radius: 4px;
+}
+.ticket-create-form-wrap::-webkit-scrollbar-thumb:hover,
+.crisp-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.85);
 }
 .ticket-form-label {
   font-size: 0.78rem;
@@ -8317,20 +8681,21 @@ body.theme-bw .cheat-panel-watermark {
   background: rgba(234, 88, 12, 0.08);
   border: 1.5px solid rgba(234, 88, 12, 0.35);
   border-radius: 12px;
-  padding: 1.4rem 1.1rem;
+  padding: 0.75rem 0.85rem;
   text-align: center;
-  margin: 0.5rem 0;
+  margin: 0.1rem 0;
   box-shadow: 0 0 25px rgba(234, 88, 12, 0.1);
+  box-sizing: border-box;
 }
 .ticket-active-badge-icon {
-  font-size: 2.2rem;
-  margin-bottom: 0.4rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.15rem;
 }
 .ticket-active-title {
-  font-size: 1.05rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: #fb923c;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.25rem;
 }
 .ticket-active-channel-tag {
   display: inline-block;
@@ -8339,37 +8704,37 @@ body.theme-bw .cheat-panel-watermark {
   color: #5865f2;
   font-family: monospace;
   font-weight: 800;
-  padding: 0.25rem 0.75rem;
+  padding: 0.18rem 0.55rem;
   border-radius: 6px;
-  font-size: 0.85rem;
-  margin-bottom: 0.8rem;
+  font-size: 0.78rem;
+  margin-bottom: 0.45rem;
 }
 .ticket-active-desc {
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   color: #cbd5e1;
-  line-height: 1.5;
-  margin-bottom: 1rem;
+  line-height: 1.35;
+  margin-bottom: 0.55rem;
 }
 .ticket-active-meta-row {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  font-size: 0.74rem;
+  gap: 0.45rem;
+  font-size: 0.70rem;
   color: #94a3b8;
   background: rgba(0, 0, 0, 0.3);
-  padding: 0.55rem 0.75rem;
+  padding: 0.35rem 0.55rem;
   border-radius: 8px;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.65rem;
 }
 .btn-goto-active-ticket {
   background: linear-gradient(135deg, #5865f2 0%, #4752c4 100%);
   color: #ffffff;
   border: none;
   border-radius: 8px;
-  padding: 0.7rem 1.25rem;
+  padding: 0.55rem 0.9rem;
   font-weight: 800;
-  font-size: 0.84rem;
+  font-size: 0.80rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -8458,6 +8823,272 @@ body.theme-bw .cheat-panel-watermark {
   background: #5865f2;
   color: #fff;
 }
+
+/* ==========================================================================
+   FINAL MOBILE RESPONSIVE OVERRIDES (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  /* Navbar Container */
+  .navbar {
+    height: 62px !important;
+    padding: 0 0.75rem !important;
+  }
+  .nav-container {
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  /* Logo: compact */
+  .logo-group,
+  .nav-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    flex-shrink: 0 !important;
+  }
+  .logo-badge {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .brand-logo-img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .logo-title {
+    font-size: 0.95rem !important;
+    letter-spacing: 0.04em !important;
+    font-weight: 900 !important;
+  }
+  .logo-sub {
+    font-size: 0.54rem !important;
+    letter-spacing: 0.14em !important;
+  }
+  .logo-sub-stacked {
+    display: none !important;
+  }
+
+  /* Hide desktop links, tools and extra navbar buttons */
+  .nav-links,
+  .nav-quick-tools,
+  .btn-yt-nav,
+  .btn-dc-nav,
+  .lang-switcher,
+  #navOwnerSecretLink,
+  .nav-link-owner-secret,
+  .owner-only-secret {
+    display: none !important;
+  }
+
+  /* Nav Actions cluster */
+  .nav-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Compact Cart Button */
+  .btn-cart {
+    padding: 0.35rem 0.5rem !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .btn-cart span[data-i18n="cart"],
+  .btn-cart span.cart-text-lbl {
+    display: none !important;
+  }
+
+  /* Compact NOXY / Panel Button */
+  .btn-panel-nav {
+    padding: 0.3rem 0.5rem !important;
+    height: 34px !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .btn-panel-nav span {
+    display: none !important;
+  }
+
+  /* Compact NOXY User Pill */
+  .btn-user-pill-nav {
+    padding: 0.2rem 0.45rem 0.2rem 0.3rem !important;
+    font-size: 0.72rem !important;
+    max-width: 90px !important;
+    height: 34px !important;
+    gap: 0.3rem !important;
+  }
+  .btn-user-pill-nav .user-badge-tag,
+  .btn-user-pill-nav svg {
+    display: none !important;
+  }
+
+  /* Mobile Toggle Hamburger */
+  .mobile-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: rgba(168, 85, 247, 0.15) !important;
+    border: 1px solid rgba(168, 85, 247, 0.45) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    z-index: 1005 !important;
+  }
+
+  /* Mobile Drawer Menu */
+  .mobile-drawer {
+    position: fixed !important;
+    top: 62px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    max-height: calc(100vh - 62px) !important;
+    overflow-y: auto !important;
+    padding: 1.25rem 1rem !important;
+    gap: 0.6rem !important;
+    z-index: 9999 !important;
+    background: rgba(10, 11, 20, 0.98) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.25) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75) !important;
+    transform: translateY(-120%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease !important;
+  }
+  .mobile-drawer.open {
+    display: flex !important;
+    flex-direction: column !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  .mobile-drawer .nav-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    color: #e2e8f0 !important;
+    transition: all 0.2s ease !important;
+  }
+  .mobile-drawer .nav-link:active,
+  .mobile-drawer .nav-link.active {
+    background: rgba(168, 85, 247, 0.18) !important;
+    border-color: rgba(168, 85, 247, 0.5) !important;
+    color: #ffffff !important;
+  }
+  .mobile-drawer .nav-link i,
+  .mobile-drawer .nav-link svg {
+    width: 20px !important;
+    height: 20px !important;
+    color: #a855f7 !important;
+  }
+
+  /* Live Chat Widget Fullscreen App on Mobile */
+  .crisp-chat-widget {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    max-width: 100vw !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    z-index: 1000000 !important;
+    box-shadow: none !important;
+    display: none;
+    flex-direction: column !important;
+  }
+  .crisp-chat-widget.open {
+    display: flex !important;
+  }
+  .crisp-header {
+    padding: 0.6rem 0.8rem !important;
+    border-radius: 0 !important;
+  }
+  .crisp-chat-box {
+    padding: 0.85rem !important;
+    flex: 1 1 auto !important;
+  }
+  .crisp-input-bar {
+    padding: 0.6rem 0.8rem 1rem !important;
+  }
+
+  /* Auth / Kurucu Modal Fullscreen / Sheet on Mobile */
+  .syntax-auth-card {
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    padding: 1.25rem 1rem !important;
+    overflow-y: auto !important;
+  }
+  .owner-tabs-nav {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 0.35rem !important;
+  }
+  .owner-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem !important;
+  }
+
+  /* Hide floating buttons when Chat or Auth Modal is open */
+  body:has(.crisp-chat-widget.open) .floating-buttons,
+  body:has(#syntaxAuthModalBackdrop[style*="flex"]) .floating-buttons {
+    display: none !important;
+  }
+
+  /* Floating Action Buttons on Mobile */
+  .floating-buttons {
+    bottom: 14px !important;
+    right: 12px !important;
+    gap: 8px !important;
+    z-index: 9998 !important;
+  }
+  .float-btn {
+    width: 42px !important;
+    height: 42px !important;
+  }
+  .float-btn-chat {
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.82rem !important;
+    border-radius: 24px !important;
+  }
+}
+
 
 
 

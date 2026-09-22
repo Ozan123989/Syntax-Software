@@ -52,15 +52,26 @@ window.saveTicketMeta = saveTicketMeta;
 
 function getTicketCategorySlug(cat) {
   const c = (cat || '').toLowerCase();
-  if (c.includes('val')) return 'val';
-  if (c.includes('spoofer') || c.includes('spf')) return 'spoofer';
-  if (c.includes('emu') || c.includes('vanguard')) return 'emu';
-  if (c.includes('cs')) return 'cs2';
-  if (c.includes('hwid') || c.includes('lisans') || c.includes('key')) return 'hwid';
-  if (c.includes('sat') || c.includes('ode') || c.includes('siparis') || c.includes('fiyat')) return 'satis';
-  return 'destek';
+  if (c.includes('sat') || c.includes('ode') || c.includes('siparis') || c.includes('fiyat') || c.includes('alim')) return 'satis';
+  if (c.includes('hwid') || c.includes('lisans') || c.includes('key') || c.includes('anahtar')) return 'hwid';
+  if (c.includes('teknik') || c.includes('kurulum') || c.includes('bios') || c.includes('hvci')) return 'teknik';
+  if (c.includes('durum') || c.includes('undetected') || c.includes('ud') || c.includes('val') || c.includes('cs') || c.includes('emu')) return 'durum';
+  return 'genel';
 }
 window.getTicketCategorySlug = getTicketCategorySlug;
+
+function getTicketCategoryInfo(cat) {
+  const slug = getTicketCategorySlug(cat);
+  const map = {
+    satis: { title: 'Satın Alım & Sipariş Kontrolü', badge: '🛒 SATIN ALIM', discordCategory: '🛒 │ SATIN ALIM & SİPARİŞ', color: '#f59e0b', emoji: '🛒' },
+    hwid: { title: 'Lisans Aktivasyonu & HWID Sıfırlama', badge: '🔑 LİSANS & HWID', discordCategory: '🔑 │ LİSANS & HWID TALEPLERİ', color: '#3b82f6', emoji: '🔑' },
+    teknik: { title: 'Teknik Destek, Kurulum & BIOS', badge: '🛠️ TEKNİK DESTEK', discordCategory: '🛠️ │ TEKNİK DESTEK & KURULUM', color: '#a855f7', emoji: '🛠️' },
+    durum: { title: 'Yazılım Durumu & Undetected Bilgisi', badge: '🟢 YAZILIM DURUMU', discordCategory: '🟢 │ YAZILIM GÜNCELLEME & DURUM', color: '#10b981', emoji: '🟢' },
+    genel: { title: 'Genel Destek & Diğer Konular', badge: '❓ GENEL DESTEK', discordCategory: '❓ │ GENEL DESTEK TALEPLERİ', color: '#06b6d4', emoji: '❓' }
+  };
+  return map[slug] || map.genel;
+}
+window.getTicketCategoryInfo = getTicketCategoryInfo;
 
 function generateTicketChannelName(cat, username) {
   const slug = getTicketCategorySlug(cat);
@@ -727,7 +738,9 @@ function initMobileNav() {
   const drawer = document.querySelector('.mobile-drawer');
   if (!toggleBtn || !drawer) return;
 
-  toggleBtn.addEventListener('click', () => {
+  toggleBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     drawer.classList.toggle('open');
     const isOpen = drawer.classList.contains('open');
     toggleBtn.innerHTML = isOpen 
@@ -738,11 +751,21 @@ function initMobileNav() {
 
   // Close when clicking outside
   document.addEventListener('click', (e) => {
-    if (!drawer.contains(e.target) && !toggleBtn.contains(e.target) && drawer.classList.contains('open')) {
+    if (e.target.closest('.mobile-toggle')) return;
+    if (!drawer.contains(e.target) && drawer.classList.contains('open')) {
       drawer.classList.remove('open');
       toggleBtn.innerHTML = '<i data-lucide="menu" style="width:24px;height:24px;"></i>';
       if (window.lucide) window.lucide.createIcons();
     }
+  });
+
+  // Close when clicking any drawer link
+  drawer.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      drawer.classList.remove('open');
+      toggleBtn.innerHTML = '<i data-lucide="menu" style="width:24px;height:24px;"></i>';
+      if (window.lucide) window.lucide.createIcons();
+    });
   });
 }
 
@@ -2662,6 +2685,10 @@ function initCrispChat() {
     if (ticketFormView && messagesContainer) {
       ticketFormView.style.display = 'flex';
       messagesContainer.style.display = 'none';
+      const crispFooter = widget ? widget.querySelector('.crisp-footer') : null;
+      if (crispFooter) crispFooter.style.display = 'none';
+      const quickChips = document.getElementById('crispCustomerQuickChips');
+      if (quickChips) quickChips.style.display = 'none';
       const curUser = (typeof getCurrentUser === 'function' && getCurrentUser());
       const chatKey = getCurrentChatKey();
 
@@ -2739,6 +2766,10 @@ function initCrispChat() {
     if (ticketFormView && messagesContainer) {
       ticketFormView.style.display = 'none';
       messagesContainer.style.display = 'flex';
+      const crispFooter = widget ? widget.querySelector('.crisp-footer') : null;
+      if (crispFooter) crispFooter.style.display = 'block';
+      const quickChips = document.getElementById('crispCustomerQuickChips');
+      if (quickChips) quickChips.style.display = 'flex';
     }
   }
 
@@ -2750,6 +2781,14 @@ function initCrispChat() {
         showTicketForm();
       }
     };
+  }
+
+  if (ticketFormView) {
+    ticketFormView.addEventListener('wheel', (e) => {
+      if (ticketFormView.scrollHeight > ticketFormView.clientHeight) {
+        ticketFormView.scrollTop += e.deltaY;
+      }
+    }, { passive: true });
   }
 
   if (crispMessagesPill) {
@@ -3809,10 +3848,10 @@ const I18N_PHRASES = [
     "ru": "Valorant Читы"
   },
   {
-    "tr": "HİLELERİ",
-    "en": "SOFTWARE",
-    "de": "SOFTWARE",
-    "ru": "ЧИТЫ"
+    "tr": "Yazılım",
+    "en": "Software",
+    "de": "Software",
+    "ru": "Программы"
   },
   {
     "tr": "SYNTAX",
@@ -6244,7 +6283,7 @@ function translateDOM(targetLang) {
         const parent = node.parentElement;
         if (!parent) return NodeFilter.FILTER_REJECT;
         const tag = parent.tagName.toLowerCase();
-        if (tag === 'script' || tag === 'style' || tag === 'svg' || tag === 'path' || parent.closest('.lang-dropdown-menu')) {
+        if (tag === 'script' || tag === 'style' || tag === 'svg' || tag === 'path' || parent.closest('.lang-dropdown-menu') || parent.closest('.logo-group') || parent.closest('.logo-text') || parent.closest('.logo-title') || parent.closest('.logo-sub')) {
           return NodeFilter.FILTER_REJECT;
         }
         if (!node.nodeValue.trim()) {
@@ -9500,7 +9539,7 @@ Kurulum ve loader dosyanızı sitemizdeki müşteri panelinizden anında indireb
           if (meta.claimedBy) {
             const canUnclaim = isOwner || (user && user.username === meta.claimedBy.username);
             streamHtml += `
-              <div class="dc-claim-indicator claimed">
+              <div class="dc-claim-indicator claimed" id="dcClaimIndicator">
                 <div style="display:flex; align-items:center; gap:0.45rem;">
                   <span>📌 Bu destek talebi <strong>@${escapeHtml(meta.claimedBy.username)}</strong> (${escapeHtml(meta.claimedBy.role)}) tarafından üstlenildi.</span>
                   <span style="font-size:0.7rem; color:#94a3b8;">(${meta.claimedBy.time || ''})</span>
@@ -9510,7 +9549,7 @@ Kurulum ve loader dosyanızı sitemizdeki müşteri panelinizden anında indireb
             `;
           } else {
             streamHtml += `
-              <div class="dc-claim-indicator unclaimed">
+              <div class="dc-claim-indicator unclaimed" id="dcClaimIndicator">
                 <span>🟡 Bu destek talebi henüz hiçbir yetkili tarafından üstlenilmedi (Boşta).</span>
                 <button type="button" class="btn-dc-action btn-dc-claim" id="btnDcClaimTicket">🙋‍♂️ Talebi Üstlen (Claim)</button>
               </div>
@@ -9680,14 +9719,15 @@ Kurulum ve loader dosyanızı sitemizdeki müşteri panelinizden anında indireb
         }
       });
 
-      // WIRE CLAIM BUTTON
-      msgContainer.querySelectorAll('#btnDcClaimTicket').forEach(btn => {
-        btn.addEventListener('click', () => {
+      // WIRE CLAIM & UNCLAIM BUTTONS (EVENT DELEGATION)
+      document.addEventListener('click', (e) => {
+        const claimBtn = e.target.closest('#btnDcClaimTicket') || (e.target.id === 'btnDcClaimTicket' ? e.target : null);
+        if (claimBtn) {
           if (!_dcSelectedKey) return;
           const meta = getTicketMeta(_dcSelectedKey);
           const timeStr = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
           meta.claimedBy = {
-            username: user.username || 'Yetkili',
+            username: (user && user.username) || 'NOXY',
             role: isOwner ? 'Kurucu' : 'Yönetici',
             time: timeStr
           };
@@ -9701,7 +9741,7 @@ Kurulum ve loader dosyanızı sitemizdeki müşteri panelinizden anında indireb
 
           history.push({
             sender: 'system',
-            text: `📌 Bu destek talebi @${user.username} (${meta.claimedBy.role}) tarafından üstlenildi (Claimed).`,
+            text: `📌 Bu destek talebi @${meta.claimedBy.username} (${meta.claimedBy.role}) tarafından üstlenildi (Claimed).`,
             time: timeStr
           });
           localStorage.setItem(_dcSelectedKey, JSON.stringify(history));
@@ -9716,15 +9756,14 @@ Kurulum ve loader dosyanızı sitemizdeki müşteri panelinizden anında indireb
             })
           }).catch(() => {});
 
-          showToast(`Destek talebi @${user.username} tarafından üstlenildi!`, 'check-circle');
+          showToast(`Destek talebi @${meta.claimedBy.username} tarafından üstlenildi!`, 'check-circle');
           renderDiscordTicketList();
           renderDiscordTicketMessages();
-        });
-      });
+          return;
+        }
 
-      // WIRE UNCLAIM BUTTON
-      msgContainer.querySelectorAll('#btnDcUnclaimTicket').forEach(btn => {
-        btn.addEventListener('click', () => {
+        const unclaimBtn = e.target.closest('#btnDcUnclaimTicket') || (e.target.id === 'btnDcUnclaimTicket' ? e.target : null);
+        if (unclaimBtn) {
           if (!_dcSelectedKey) return;
           const meta = getTicketMeta(_dcSelectedKey);
           const prevUser = meta.claimedBy ? meta.claimedBy.username : 'Yetkili';
@@ -9758,7 +9797,8 @@ Kurulum ve loader dosyanızı sitemizdeki müşteri panelinizden anında indireb
           showToast('Destek talebi serbest bırakıldı.', 'info');
           renderDiscordTicketList();
           renderDiscordTicketMessages();
-        });
+          return;
+        }
       });
 
       // WIRE DOWNLOAD TRANSCRIPT (.HTML)
@@ -10421,6 +10461,20 @@ Kurulum ve loader dosyanızı sitemizdeki müşteri panelinizden anında indireb
   }
 
   // --- 5. NAVBAR STATE UPDATE ---
+  
+  // Global click delegation to guarantee navbar user button always opens dashboard
+  document.addEventListener('click', (e) => {
+    const userPill = e.target.closest('.btn-user-pill-nav') || e.target.closest('#navPanelBtn');
+    if (userPill) {
+      e.preventDefault();
+      e.stopPropagation();
+      const curUser = (typeof getCurrentUser === 'function' && getCurrentUser());
+      if (typeof openAuthModal === 'function') {
+        openAuthModal(curUser ? undefined : 'user');
+      }
+    }
+  });
+
   function updateNavbarState() {
     const user = getCurrentUser();
     const panelBtns = document.querySelectorAll('.btn-panel-nav, .btn-user-pill-nav');
@@ -11488,6 +11542,7 @@ Kurulum ve loader dosyanızı sitemizdeki müşteri panelinizden anında indireb
   window.closeAuthModal = closeModal;
   window.getCurrentUser = getCurrentUser;
   window.setCurrentUser = setCurrentUser;
+  window.updateNavbarState = updateNavbarState;
   window.openOwnerSecretModal = openOwnerSecretModal;
   window.initKurucuDirectPage = initKurucuDirectPage;
 

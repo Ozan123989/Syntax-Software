@@ -25,30 +25,30 @@
     },
     "syntax_chat_user_noxy": {
       "chatKey": "syntax_chat_user_noxy",
-      "ticket_number": 1004,
+      "ticket_number": 1006,
       "username": "NOXY",
       "fullName": "NOXY",
       "discord_thread_id": null,
       "status": "OPEN",
-      "created_at": "2026-09-22T03:00:24.120873",
+      "created_at": "2026-09-22T10:23:35.867296",
       "messages": [
         {
           "sender": "user",
-          "text": "[Kategori: Satın Alım & Lisans] c",
-          "time": "Bugün 03:00",
-          "timestamp": 1790035224.1208735
+          "text": "🔑 HWID sıfırlama veya lisans anahtarı aktivasyon yardımı rica ediyorum.",
+          "time": "Bugün 10:23",
+          "timestamp": 1790061815.8672967
         },
         {
           "sender": "user",
           "text": "merhaba",
-          "time": "Bugün 03:00",
-          "timestamp": 1790035227.9355743
+          "time": "Bugün 10:24",
+          "timestamp": 1790061840.149331
         },
         {
           "sender": "user",
-          "text": "🔑 HWID sıfırlama veya lisans anahtarı aktivasyon yardımı rica ediyorum.",
-          "time": "Bugün 03:01",
-          "timestamp": 1790035273.4155247
+          "text": "emrhaab",
+          "time": "Bugün 10:24",
+          "timestamp": 1790061847.4833882
         }
       ]
     },
@@ -68,11 +68,126 @@
           "timestamp": 1790035683.3844826
         }
       ]
+    },
+    "test_cat_chat_satis": {
+      "chatKey": "test_cat_chat_satis",
+      "ticket_number": 1007,
+      "channel_name": "web-satis-noxy",
+      "category": "satis",
+      "category_name": "Satın Alım & Sipariş Kontrolü",
+      "category_discord": "🛒 │ SATIN ALIM & SİPARİŞ",
+      "category_badge": "🛒 SATIN ALIM & SİPARİŞ",
+      "username": "NOXY",
+      "fullName": "NOXY (Kurucu)",
+      "discord_thread_id": null,
+      "claimed_by": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T11:11:38.956271",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Bu bir Satın Alım & Lisans test mesajıdır.",
+          "time": "Bugün 11:11",
+          "timestamp": 1790064698.9562716
+        }
+      ]
+    },
+    "test_cat_chat_hwid": {
+      "chatKey": "test_cat_chat_hwid",
+      "ticket_number": 1008,
+      "channel_name": "web-hwid-noxy",
+      "category": "hwid",
+      "category_name": "Lisans Aktivasyonu & HWID Sıfırlama",
+      "category_discord": "🔑 │ LİSANS & HWID TALEPLERİ",
+      "category_badge": "🔑 LİSANS & HWID SIFIRLAMA",
+      "username": "NOXY",
+      "fullName": "NOXY (Kurucu)",
+      "discord_thread_id": null,
+      "claimed_by": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T11:11:39.519233",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Bu bir Lisans / HWID Sıfırlama test mesajıdır.",
+          "time": "Bugün 11:11",
+          "timestamp": 1790064699.5192335
+        }
+      ]
+    },
+    "test_cat_chat_teknik": {
+      "chatKey": "test_cat_chat_teknik",
+      "ticket_number": 1009,
+      "channel_name": "web-teknik-noxy",
+      "category": "teknik",
+      "category_name": "Teknik Destek, Kurulum & BIOS",
+      "category_discord": "🛠️ │ TEKNİK DESTEK & KURULUM",
+      "category_badge": "🛠️ TEKNİK DESTEK & KURULUM",
+      "username": "NOXY",
+      "fullName": "NOXY (Kurucu)",
+      "discord_thread_id": null,
+      "claimed_by": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T11:11:40.074265",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Bu bir Teknik Destek & Kurulum test mesajıdır.",
+          "time": "Bugün 11:11",
+          "timestamp": 1790064700.0742657
+        }
+      ]
+    },
+    "test_cat_chat_durum": {
+      "chatKey": "test_cat_chat_durum",
+      "ticket_number": 1010,
+      "channel_name": "web-durum-noxy",
+      "category": "durum",
+      "category_name": "Yazılım Durumu & Undetected Bilgisi",
+      "category_discord": "🟢 │ YAZILIM GÜNCELLEME & DURUM",
+      "category_badge": "🟢 YAZILIM DURUMU & UNDETECTED",
+      "username": "NOXY",
+      "fullName": "NOXY (Kurucu)",
+      "discord_thread_id": null,
+      "claimed_by": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T11:11:40.615998",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Bu bir Undetected & Durum test mesajıdır.",
+          "time": "Bugün 11:11",
+          "timestamp": 1790064700.6159983
+        }
+      ]
+    },
+    "test_cat_chat_genel": {
+      "chatKey": "test_cat_chat_genel",
+      "ticket_number": 1011,
+      "channel_name": "web-genel-noxy",
+      "category": "genel",
+      "category_name": "Genel Sorular & Diğer Konular",
+      "category_discord": "❓ │ GENEL DESTEK TALEPLERİ",
+      "category_badge": "❓ GENEL DESTEK TALEBİ",
+      "username": "NOXY",
+      "fullName": "NOXY (Kurucu)",
+      "discord_thread_id": null,
+      "claimed_by": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T11:11:41.165394",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Bu bir Diğer Sorular test mesajıdır.",
+          "time": "Bugün 11:11",
+          "timestamp": 1790064701.1653948
+        }
+      ]
     }
   },
   "meta": {
-    "next_ticket_id": 1006,
-    "last_hourly_check": "2026-09-22 09:59:56",
+    "next_ticket_id": 1012,
+    "last_hourly_check": "2026-09-22 18:00:15",
     "last_hourly_status": "OK",
     "discord_latency_ms": 0.0
   }
