@@ -3105,8 +3105,6 @@ Yetkili ekibimiz en kısa sürede canlı olarak yanıt verecektir.`;
 
     const timeStr = formatCurrentTime();
     saveMessage('user', text, timeStr);
-    const userMsgObj = { sender: 'user', text: text, time: timeStr };
-    messagesContainer.appendChild(createMessageElement(userMsgObj));
 
     if (!textOverride && textarea) {
       textarea.value = '';
@@ -3163,19 +3161,11 @@ Yetkili ekibimiz en kısa sürede canlı olarak yanıt verecektir.`;
       if (lower.includes('taksit') || lower.includes('kredi kart') || lower.includes('ödeme') || lower.includes('odeme') || lower.includes('kart')) {
         reply = "İyzico ve Shopier altyapımız üzerinden tüm kredi kartlarına 12 aya varan taksit imkanı sunulmaktadır. Havale/EFT ve Kripto ile de komisyonsuz ödeme yapabilirsiniz.";
       } else if (lower.includes('spoofer') || lower.includes('hwid') || lower.includes('van 152') || lower.includes('val 5')) {
-        reply = "🛡️ Spoofer Seçeneklerimiz:
-• t3mp spoofer (Onetime: 1.200 TL / Lifetime: 1.700 TL)
-• p3rm spoofer (Onetime: 1.500 TL / Lifetime: 2.500 TL)
-VAN 152 & VAL 5 bypass tam desteklidir.";
+        reply = `🛡️ Spoofer Seçeneklerimiz:\n• t3mp spoofer (Onetime: 1.200 TL / Lifetime: 1.700 TL)\n• p3rm spoofer (Onetime: 1.500 TL / Lifetime: 2.500 TL)\nVAN 152 & VAL 5 bypass tam desteklidir.`;
       } else if (lower.includes('emulator') || lower.includes('vanguard')) {
         reply = "⚡ Vanguard Emulator: 3 Günlük $39.99, 1 Haftalık $69.99, 1 Aylık $199.99, Lifetime $400. Format veya BIOS gerektirmez, VAN 102, VAL 5, VAN 79, VAN 152 hatalarını çözer!";
       } else if (lower.includes('cs') || lower.includes('cs2') || lower.includes('counter')) {
-        reply = "🎯 CS2 External & Private Hilelerimiz:
-• Günlük: 340 TL
-• 3 Günlük: 1.000 TL
-• 7 Günlük: 1.500 TL
-• 30 Günlük: 2.300 TL
-Aimbot, ESP, Stream Proof ve tam HVCI/TPM uyumludur.";
+        reply = `🎯 CS2 External & Private Hilelerimiz:\n• Günlük: 340 TL\n• 3 Günlük: 1.000 TL\n• 7 Günlük: 1.500 TL\n• 30 Günlük: 2.300 TL\nAimbot, ESP, Stream Proof ve tam HVCI/TPM uyumludur.`;
       } else if (lower.includes('fiyat') || lower.includes('ücret') || lower.includes('kaç') || lower.includes('tl') || lower.includes('para') || lower.includes('fiyatı')) {
         reply = "Tüm güncel Valorant ve Counter-Strike 2 yazılımlarımızın fiyatlarını 'Ürünler' (Mağaza) sayfamızdan inceleyebilir veya Discord sunucumuzdan destek alabilirsiniz!";
       } else if (lower.includes('ban') || lower.includes('risk') || lower.includes('durum') || lower.includes('güven')) {
@@ -3188,8 +3178,6 @@ Aimbot, ESP, Stream Proof ve tam HVCI/TPM uyumludur.";
 
       const timeNow = formatCurrentTime();
       saveMessage('bot', reply, timeNow);
-      const botMsgObj = { sender: 'bot', text: reply, time: timeNow, author: activeStaff.name, badge: 'Yetkili Danışman' };
-      messagesContainer.appendChild(createMessageElement(botMsgObj));
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
       playStaffChime();
     }, 1100);

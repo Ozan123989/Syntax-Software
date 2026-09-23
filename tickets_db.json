@@ -115,6 +115,36 @@
           "text": "🧾 Ödeme Bildirimi: Havale/EFT dekontunuzu lütfen buraya veya WhatsApp (+90 534 646 08 21) hattımıza iletiniz.",
           "time": "Bugün 22:27",
           "timestamp": 1790191622.1687484
+        },
+        {
+          "sender": "staff",
+          "text": "merhaba",
+          "time": "Bugün 22:37",
+          "timestamp": 1790192266.2264867
+        },
+        {
+          "sender": "user",
+          "text": "merhaba",
+          "time": "Bugün 22:37",
+          "timestamp": 1790192270.3898602
+        },
+        {
+          "sender": "staff",
+          "text": "nasılsınız",
+          "time": "Bugün 22:37",
+          "timestamp": 1790192275.5715425
+        },
+        {
+          "sender": "user",
+          "text": "iyiyim siz",
+          "time": "Bugün 22:37",
+          "timestamp": 1790192279.4694738
+        },
+        {
+          "sender": "user",
+          "text": "🔑 HWID sıfırlama veya lisans anahtarı aktivasyon yardımı rica ediyorum.",
+          "time": "Bugün 22:47",
+          "timestamp": 1790192851.7412493
         }
       ]
     },
@@ -327,10 +357,55 @@
           "timestamp": 1790191638.723309
         }
       ]
+    },
+    "syntax_chat_guest_jj9wi7a": {
+      "chatKey": "syntax_chat_guest_jj9wi7a",
+      "ticket_number": 1017,
+      "username": "Ziyaretçi",
+      "status": "OPEN",
+      "created_at": "2026-09-23T22:32:04.700564",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Ödemede Taksit Var mı? 💳",
+          "time": "Bugün 22:32",
+          "timestamp": 1790191924.7005641
+        }
+      ]
+    },
+    "syntax_chat_guest_vm5ks05": {
+      "chatKey": "syntax_chat_guest_vm5ks05",
+      "ticket_number": 1018,
+      "username": "Ziyaretçi",
+      "status": "OPEN",
+      "created_at": "2026-09-23T22:36:44.719808",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Ödemede Taksit Var mı? 💳",
+          "time": "Bugün 22:36",
+          "timestamp": 1790192204.719808
+        }
+      ]
+    },
+    "syntax_chat_guest_ndvyo43": {
+      "chatKey": "syntax_chat_guest_ndvyo43",
+      "ticket_number": 1019,
+      "username": "Ziyaretçi",
+      "status": "OPEN",
+      "created_at": "2026-09-23T22:45:33.604168",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Ödemede Taksit Var mı? 💳",
+          "time": "Bugün 22:45",
+          "timestamp": 1790192733.604168
+        }
+      ]
     }
   },
   "meta": {
-    "next_ticket_id": 1017,
+    "next_ticket_id": 1020,
     "last_hourly_check": "2026-09-23 22:00:17",
     "last_hourly_status": "OK",
     "discord_latency_ms": 0.0
