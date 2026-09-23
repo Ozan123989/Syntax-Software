@@ -25,30 +25,96 @@
     },
     "syntax_chat_user_noxy": {
       "chatKey": "syntax_chat_user_noxy",
-      "ticket_number": 1006,
+      "ticket_number": 1015,
       "username": "NOXY",
       "fullName": "NOXY",
       "discord_thread_id": null,
       "status": "OPEN",
-      "created_at": "2026-09-22T10:23:35.867296",
+      "created_at": "2026-09-23T22:23:03.507857",
       "messages": [
         {
           "sender": "user",
-          "text": "🔑 HWID sıfırlama veya lisans anahtarı aktivasyon yardımı rica ediyorum.",
-          "time": "Bugün 10:23",
-          "timestamp": 1790061815.8672967
+          "text": "[Kategori: Satın Alım & Lisans] merhaba",
+          "time": "Bugün 22:23",
+          "timestamp": 1790191383.5078573
         },
         {
           "sender": "user",
           "text": "merhaba",
-          "time": "Bugün 10:24",
-          "timestamp": 1790061840.149331
+          "time": "Bugün 22:23",
+          "timestamp": 1790191389.6337452
         },
         {
           "sender": "user",
-          "text": "emrhaab",
-          "time": "Bugün 10:24",
-          "timestamp": 1790061847.4833882
+          "text": "urun fiyat bilgisi",
+          "time": "Bugün 22:23",
+          "timestamp": 1790191417.0416145
+        },
+        {
+          "sender": "user",
+          "text": "🛒 Satın alım ve ödeme yöntemleri hakkında bilgi almak istiyorum.",
+          "time": "Bugün 22:24",
+          "timestamp": 1790191458.0262403
+        },
+        {
+          "sender": "staff",
+          "text": "merhaba",
+          "time": "Bugün 22:25",
+          "timestamp": 1790191525.7563007
+        },
+        {
+          "sender": "user",
+          "text": "merhaba",
+          "time": "Bugün 22:25",
+          "timestamp": 1790191532.541891
+        },
+        {
+          "sender": "user",
+          "text": "nok",
+          "time": "Bugün 22:26",
+          "timestamp": 1790191572.2895458
+        },
+        {
+          "sender": "staff",
+          "text": "nok nok",
+          "time": "Bugün 22:26",
+          "timestamp": 1790191576.773765
+        },
+        {
+          "sender": "user",
+          "text": "kim o",
+          "time": "Bugün 22:26",
+          "timestamp": 1790191580.2417743
+        },
+        {
+          "sender": "staff",
+          "text": "benim",
+          "time": "Bugün 22:26",
+          "timestamp": 1790191583.642326
+        },
+        {
+          "sender": "user",
+          "text": "ben ben",
+          "time": "Bugün 22:26",
+          "timestamp": 1790191588.1278443
+        },
+        {
+          "sender": "user",
+          "text": "merhaba",
+          "time": "Bugün 22:26",
+          "timestamp": 1790191612.2324412
+        },
+        {
+          "sender": "staff",
+          "text": "⏳ İnceleme: Bildirdiğiniz teknik durum yetkili ekibimizce test edilmektedir. Lütfen bekleyiniz.",
+          "time": "Bugün 22:26",
+          "timestamp": 1790191616.656388
+        },
+        {
+          "sender": "staff",
+          "text": "🧾 Ödeme Bildirimi: Havale/EFT dekontunuzu lütfen buraya veya WhatsApp (+90 534 646 08 21) hattımıza iletiniz.",
+          "time": "Bugün 22:27",
+          "timestamp": 1790191622.1687484
         }
       ]
     },
@@ -183,11 +249,89 @@
           "timestamp": 1790064701.1653948
         }
       ]
+    },
+    "syntax_chat_test": {
+      "chatKey": "syntax_chat_test",
+      "ticket_number": 1012,
+      "username": "TestUser",
+      "fullName": "TestUser",
+      "discord_thread_id": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T22:52:22.895287",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "Test mesaji",
+          "time": "Bugün 22:52",
+          "timestamp": 1790106742.895287
+        },
+        {
+          "sender": "user",
+          "text": "Test ikinci mesaj",
+          "time": "Bugün 22:52",
+          "timestamp": 1790106753.5206375
+        }
+      ]
+    },
+    "syntax_chat_guest_axq5a9r": {
+      "chatKey": "syntax_chat_guest_axq5a9r",
+      "ticket_number": 1013,
+      "username": "SyntaxTester",
+      "fullName": "Ziyaretçi (Giriş Yapılmamış)",
+      "discord_thread_id": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T22:59:23.244782",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "[Kategori: Satın Alım & Lisans] Test bileti: Lisans teslimi ve CS2 hilesi hakkında bilgi rica ediyorum.",
+          "time": "Bugün 22:59",
+          "timestamp": 1790107163.2453222
+        }
+      ]
+    },
+    "syntax_chat_guest_8ivbqsr": {
+      "chatKey": "syntax_chat_guest_8ivbqsr",
+      "ticket_number": 1014,
+      "username": "SyntaxTester",
+      "fullName": "Ziyaretçi (Giriş Yapılmamış)",
+      "discord_thread_id": null,
+      "status": "OPEN",
+      "created_at": "2026-09-22T22:59:38.848277",
+      "messages": [
+        {
+          "sender": "user",
+          "text": "[Kategori: Satın Alım & Lisans] Test bileti: Lisans teslimi ve CS2 hilesi hakkında bilgi rica ediyorum.",
+          "time": "Bugün 22:59",
+          "timestamp": 1790107178.848277
+        },
+        {
+          "sender": "user",
+          "text": "Windows 11 23H2 için de uyumlu mudur?",
+          "time": "Bugün 22:59",
+          "timestamp": 1790107180.0072424
+        }
+      ]
+    },
+    "syntax_chat_user_destek_ornek": {
+      "chatKey": "syntax_chat_user_destek_ornek",
+      "ticket_number": 1016,
+      "username": "Kurucu (NOXY)",
+      "status": "OPEN",
+      "created_at": "2026-09-23T22:27:18.723309",
+      "messages": [
+        {
+          "sender": "staff",
+          "text": "merhbaa",
+          "time": "Bugün 22:27",
+          "timestamp": 1790191638.723309
+        }
+      ]
     }
   },
   "meta": {
-    "next_ticket_id": 1012,
-    "last_hourly_check": "2026-09-22 18:00:15",
+    "next_ticket_id": 1017,
+    "last_hourly_check": "2026-09-23 22:00:17",
     "last_hourly_status": "OK",
     "discord_latency_ms": 0.0
   }

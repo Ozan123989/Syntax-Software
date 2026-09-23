@@ -576,7 +576,7 @@ function initProductDetailModal() {
           <span class="detail-footer-period-val">/ Geliştirme Sürüyor</span>
         </div>
         <a href="https://discord.gg/wFaNxzyMU" target="_blank" class="btn-detail-purchase-main" style="text-decoration:none; background:#f59e0b; color:#0b0e17;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
           <span>Discord'dan Takip Et</span>
         </a>
       `;
@@ -2450,92 +2450,123 @@ function initCartAndCheckout() {
 window.initCartAndCheckout = initCartAndCheckout;
 window.initCartAndQuickActions = initCartAndCheckout;
 
-
 /* ==========================================================================
-   7. CRISP STYLE LIVE CHAT WIDGET (WITH ADMIN / STAFF MESSAGING & PERSISTENCE)
+   7. CRISP STYLE LIVE CHAT WIDGET (DARK EMERALD THEME WITH RANDOMIZED STAFF & DISCORD BRIDGE)
    ========================================================================== */
+
+const STAFF_POOL = [
+  { name: 'Burak', title: 'Yetkili Danışman', avatarColor: '#059669', initial: 'B' },
+  { name: 'Emre Kaya', title: 'Yetkili Danışman', avatarColor: '#10b981', initial: 'E' },
+  { name: 'Berk Aksoy', title: 'Yetkili Danışman', avatarColor: '#14b8a6', initial: 'B' },
+  { name: 'Mert Demir', title: 'Yetkili Danışman', avatarColor: '#0d9488', initial: 'M' },
+  { name: 'Caner Şen', title: 'Yetkili Danışman', avatarColor: '#10b981', initial: 'C' },
+  { name: 'Arda Koç', title: 'Yetkili Danışman', avatarColor: '#059669', initial: 'A' },
+  { name: 'Tolga Yıldız', title: 'Yetkili Danışman', avatarColor: '#14b8a6', initial: 'T' }
+];
+
+function getActiveStaffAgent() {
+  try {
+    let saved = localStorage.getItem('syntax_active_support_staff');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed.name && parsed.name.toLowerCase() !== 'zeynep') return parsed;
+    }
+  } catch (e) {}
+  const picked = STAFF_POOL[Math.floor(Math.random() * STAFF_POOL.length)];
+  try {
+    localStorage.setItem('syntax_active_support_staff', JSON.stringify(picked));
+  } catch (e) {}
+  return picked;
+}
+
+function getCurrentShiftText() {
+  const hr = new Date().getHours();
+  if (hr >= 6 && hr < 12) return 'Sabah Vardiyası • Çevrimiçi';
+  if (hr >= 12 && hr < 18) return 'Öğle Vardiyası • Çevrimiçi';
+  if (hr >= 18 && hr < 24) return 'Akşam Vardiyası • Çevrimiçi';
+  return 'Gece Vardiyası • Çevrimiçi';
+}
+
 function initCrispChat() {
   // Check if widget already exists
   let widget = document.getElementById('crispChatWidget');
+  const currentStaff = getActiveStaffAgent();
+
   if (!widget) {
     widget = document.createElement('div');
     widget.id = 'crispChatWidget';
     widget.className = 'crisp-chat-widget';
     widget.innerHTML = `
-      <!-- Support Ticket Dark Header -->
+      <!-- Support Dark Emerald Reference Header -->
       <div class="crisp-header">
         <div class="crisp-header-topbar">
-          <div class="crisp-messages-pill" id="crispMessagesPill" title="Aktif Destek Bileti" role="button" tabindex="0">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-            <span id="ticketPillTitle">Bilet / Sohbet</span>
-          </div>
-
-          <button type="button" class="ticket-open-tab-btn" id="btnNewTicketFormToggle" title="Yeni Destek Bileti Aç">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            <span>Ticket Aç</span>
+          <!-- Left Minimize Button -->
+          <button type="button" class="crisp-minimize-btn" id="crispMinimizeBtn" title="Küçült">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
 
+          <!-- Center Agent Profile with Radar Pulse -->
+          <div class="crisp-agent-profile">
+            <div class="crisp-agent-avatar-wrap">
+              <div class="radar-pulse-ring"></div>
+              <div class="crisp-agent-avatar" id="crispAgentAvatar" style="background: ${currentStaff.avatarColor};">
+                <span style="font-size: 1.15rem; font-weight: 800; color: #ffffff;">${currentStaff.initial}</span>
+              </div>
+            </div>
+            <div class="crisp-agent-details">
+              <div class="crisp-agent-name-row">
+                <span class="crisp-agent-name" id="crispAgentName">${escapeHtml(currentStaff.name)}</span>
+                <span class="crisp-verified-badge" title="Doğrulanmış Yetkili Destek Ekibi">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="crisp-agent-status-row" id="crispAgentShiftText">${getCurrentShiftText()}</div>
+              <div class="crisp-agent-response-row">
+                <span class="crisp-status-dot"></span>
+                <span>Yanıt: ~15 sn</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Top Actions: Sound Toggle, Options, Close -->
           <div class="crisp-top-actions">
-            <button class="crisp-admin-toggle-btn owner-only-secret" id="crispOwnerSecretBtn" type="button" title="Kurucu (Owner) Gizli Kanalı" style="display:none; background:rgba(245,158,11,0.2); border-color:#f59e0b; color:#fbbf24;">
-              <span>👑 Owner</span>
+            <button type="button" class="crisp-top-btn" id="crispSoundToggleBtn" title="Bildirim Sesi: Açık">
+              <svg id="crispSoundIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
             </button>
-            <button class="crisp-icon-action" id="crispOptionsBtn" title="Seçenekler">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            <button type="button" class="crisp-top-btn" id="crispOptionsBtn" title="Seçenekler">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </button>
-            <button class="crisp-icon-action" id="crispCloseBtn" title="Kapat">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <button type="button" class="crisp-top-btn" id="crispCloseBtn" title="Kapat">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
           </div>
-        </div>
-
-        <!-- Avatars Trio -->
-        <div class="crisp-avatars-trio">
-          <div class="crisp-avatar-circle" title="Discord Canlı Köprü">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-          </div>
-          <div class="crisp-avatar-circle" title="Destek Ekibi">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="#a78bfa"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-          </div>
-          <div class="crisp-avatar-circle primary" title="Syntax Bot">
-            <img src="images/syntax-logo.webp" alt="Syntax" style="width:24px;height:24px;border-radius:50%;object-fit:cover;">
-          </div>
-        </div>
-
-        <h3 class="crisp-header-title">Syntax Destek & Ticket Sistemi</h3>
-        <div class="crisp-header-sub">
-          <span class="sub-pulse-green"></span>
-          <span>Çevrimiçi · Discord Web-Ticket Köprüsü Aktif</span>
-        </div>
-
-        <div class="crisp-ticket-status-pill" id="crispLiveTicketPill">
-          <span class="sub-pulse-green"></span>
-          <span id="crispTicketStatusText">Discord Canlı Senkronizasyon Hazır</span>
         </div>
       </div>
 
-      <!-- Quick Topic Chips (Hızlı Destek Başlıkları) -->
+      <!-- Quick Topic Chips -->
       <div class="crisp-customer-quickchips" id="crispCustomerQuickChips">
-        <button type="button" class="crisp-user-chip" data-quick="🛒 Satın alım ve ödeme yöntemleri hakkında bilgi almak istiyorum.">
+        <button type="button" class="crisp-user-chip" data-quick="Ödemede Taksit Var mı? 💳">
+          <span>💳 Ödemede Taksit</span>
+        </button>
+        <button type="button" class="crisp-user-chip" data-quick="🛒 Satın alım ve lisans teslimatı hakkında bilgi almak istiyorum.">
           <span>🛒 Satın Alım & Fiyat</span>
         </button>
         <button type="button" class="crisp-user-chip" data-quick="🔑 HWID sıfırlama veya lisans anahtarı aktivasyon yardımı rica ediyorum.">
-          <span>🔑 Lisans / HWID Sıfırla</span>
+          <span>🔑 Lisans / HWID</span>
         </button>
         <button type="button" class="crisp-user-chip" data-quick="🛠️ Kurulum adımları ve defender / bios ayarları için yardım istiyorum.">
-          <span>🛠️ Kurulum & Destek</span>
+          <span>🛠️ Kurulum Destek</span>
         </button>
-        <button type="button" class="crisp-user-chip" data-quick="🟢 Valorant ve CS2 hilelerinin anlık ban ve undetected durumu nedir?">
+        <button type="button" class="crisp-user-chip" data-quick="🟢 Valorant ve Vanguard ürünlerinin anlık ban ve undetected durumu nedir?">
           <span>🟢 Undetected Durumu</span>
         </button>
-      </div>
-
-      <!-- Admin Status Banner -->
-      <div class="crisp-admin-banner" id="crispAdminBanner" style="display: none;">
-        <div class="crisp-admin-banner-content">
-          <span class="admin-pulse-dot"></span>
-          <span><strong>YÖNETİCİ MODU AKTİF</strong> · Yetkili Yanıtı</span>
-        </div>
-        <button class="crisp-admin-exit-btn" id="crispAdminExitBtn" type="button" title="Müşteri Moduna Dön">Çıkış</button>
       </div>
 
       <!-- Options Dropdown Menu -->
@@ -2544,24 +2575,20 @@ function initCrispChat() {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           <span>Yeni Ticket Aç</span>
         </button>
-        <button type="button" class="crisp-opt-item" id="crispOptToggleAdmin">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <span id="crispOptAdminText">Yönetici Modunu Aç</span>
-        </button>
         <button type="button" class="crisp-opt-item text-danger" id="crispOptClearHistory">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
           <span>Sohbet Geçmişini Temizle</span>
         </button>
         <a href="https://discord.gg/wFaNxzyMU" target="_blank" rel="noopener" class="crisp-opt-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-          <span>Discord Desteğe Git</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          <span>Discord Destek Kanalı</span>
         </a>
       </div>
 
       <!-- Dedicated Ticket Creation View (Web-Ticket Form) -->
       <div class="ticket-create-form-wrap" id="ticketCreateFormView" style="display: none;">
-        <div style="background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.35); border-radius:10px; padding:0.75rem 0.9rem; font-size:0.78rem; color:#d8b4fe; line-height:1.4;">
-          🎫 <strong>Yeni Destek Bileti Açın:</strong> Talebiniz anında Discord'daki <strong>#web-ticket</strong> kategorisine düşer. Yetkili ekibimiz canlı olarak buradan yanıtlar.
+        <div style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:0.75rem 0.9rem; font-size:0.78rem; color:#6ee7b7; line-height:1.4;">
+          🎫 <strong>Yeni Destek Bileti Açın:</strong> Talebiniz anında Discord yetkili ekibimize köprülenir.
         </div>
 
         <div>
@@ -2577,7 +2604,7 @@ function initCrispChat() {
 
         <div>
           <label class="ticket-form-label">Adınız veya Discord Kullanıcı Adınız:</label>
-          <input type="text" class="ticket-form-input" id="ticketDiscordUsernameInput" placeholder="Örn: NOXY veya @kullanici#0001">
+          <input type="text" class="ticket-form-input" id="ticketDiscordUsernameInput" placeholder="Örn: NOXY veya @kullanici">
         </div>
 
         <div>
@@ -2587,7 +2614,7 @@ function initCrispChat() {
 
         <button type="button" class="btn-submit-new-ticket" id="btnSubmitNewTicket">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-          <span>Ticket Aç (Discord #web-ticket'a Gönder)</span>
+          <span>Ticket Aç (Yetkililere İlet)</span>
         </button>
       </div>
 
@@ -2604,38 +2631,17 @@ function initCrispChat() {
         <button class="crisp-emoji-btn" type="button">🛡️</button>
       </div>
 
-      <!-- Admin Quick Replies Bar -->
-      <div class="crisp-admin-quickbar" id="crispAdminQuickbar" style="display: none;">
-        <button type="button" class="crisp-quick-chip" data-reply="👋 Merhaba! Size nasıl yardımcı olabiliriz?">👋 Merhaba</button>
-        <button type="button" class="crisp-quick-chip" data-reply="✅ Siparişiniz ve lisans anahtarınız onaylandı.">✅ Onaylandı</button>
-        <button type="button" class="crisp-quick-chip" data-reply="🎧 Discord biletinizi kontrol edin, size oradan yazıldı: https://discord.gg/wFaNxzyMU">🎧 Discord</button>
-        <button type="button" class="crisp-quick-chip" data-reply="🟢 Yazılımımız şu anda tamamen UNDETECTED ve günceldir.">🟢 Undetected</button>
-        <button type="button" class="crisp-quick-chip" data-reply="🛡️ Spoofer VAN152 & VAL5 bypass güncel olarak hazırdır.">🛡️ Spoofer</button>
-        <button type="button" class="crisp-quick-chip chip-danger" id="crispClearChatChip" title="Sohbeti Sıfırla">🗑️ Temizle</button>
-      </div>
-
       <!-- Footer / Input Box -->
       <div class="crisp-footer">
         <div class="crisp-input-container">
-          <textarea class="crisp-textarea" id="crispInputText" placeholder="Sorunuzu veya mesajınızı buraya yazın... (Enter)" rows="1"></textarea>
+          <textarea class="crisp-textarea" id="crispInputText" placeholder="Mesajınızı yazın..." rows="1"></textarea>
           
           <div class="crisp-input-actions">
-            <div class="crisp-media-buttons">
-              <button class="crisp-tool-btn" id="crispEmojiTrigger" type="button" title="Emoji Ekle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-              </button>
-              
-              <button class="crisp-tool-btn" id="crispAttachBtn" type="button" title="Dosya Ekle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-              </button>
-
-              <button class="crisp-tool-btn" id="crispAudioBtn" type="button" title="Ses Kaydı">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
-              </button>
-            </div>
-
+            <button class="crisp-tool-btn" id="crispEmojiTrigger" type="button" title="Emoji Ekle">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            </button>
             <button class="crisp-send-btn" id="crispSendBtn" type="button" title="Gönder">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
@@ -2643,9 +2649,24 @@ function initCrispChat() {
           </div>
         </div>
 
-        <div class="crisp-branding">
-          <span>⚡ Güvenli Altyapı ·</span>
-          <span class="brand-name" style="color:#c084fc; font-weight:800;">Syntax Shield & Discord Live Bridge</span>
+        <!-- Reference Sub-bar: 256-bit SSL & Feedback Rating -->
+        <div class="crisp-sub-bar">
+          <div class="crisp-sub-ssl">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>256-bit SSL</span>
+            <span class="sub-sep">•</span>
+            <span class="sub-brand">Syntax Software</span>
+          </div>
+          <div class="crisp-sub-feedback">
+            <span class="feedback-label">Görüşmeyi puanla:</span>
+            <button type="button" class="crisp-rate-btn" id="crispRateDown" title="Kötü">👎</button>
+            <button type="button" class="crisp-rate-btn" id="crispRateUp" title="İyi">👍</button>
+            <span class="sub-sep">•</span>
+            <span class="sub-live-indicator">
+              <span class="crisp-status-dot"></span>
+              <span>Canlı</span>
+            </span>
+          </div>
         </div>
       </div>
     `;
@@ -2654,32 +2675,79 @@ function initCrispChat() {
 
   const chatButtons = document.querySelectorAll('.float-btn-chat');
   const closeBtn = document.getElementById('crispCloseBtn');
+  const minimizeBtn = document.getElementById('crispMinimizeBtn');
+  const soundToggleBtn = document.getElementById('crispSoundToggleBtn');
+  const optionsBtn = document.getElementById('crispOptionsBtn');
+  const optionsMenu = document.getElementById('crispOptionsMenu');
+  const optClearHistory = document.getElementById('crispOptClearHistory');
+  const optOpenNewTicket = document.getElementById('crispOptOpenNewTicket');
+  const rateUp = document.getElementById('crispRateUp');
+  const rateDown = document.getElementById('crispRateDown');
+
   const sendBtn = document.getElementById('crispSendBtn');
   const textarea = document.getElementById('crispInputText');
   const messagesContainer = document.getElementById('crispMessagesContainer');
   const emojiTrigger = document.getElementById('crispEmojiTrigger');
   const emojiPopover = document.getElementById('crispEmojiPopover');
-  const adminToggleBtn = document.getElementById('crispAdminToggleBtn');
-  const adminBanner = document.getElementById('crispAdminBanner');
-  const adminExitBtn = document.getElementById('crispAdminExitBtn');
-  const adminQuickbar = document.getElementById('crispAdminQuickbar');
-  const optionsBtn = document.getElementById('crispOptionsBtn');
-  const optionsMenu = document.getElementById('crispOptionsMenu');
-  const optToggleAdmin = document.getElementById('crispOptToggleAdmin');
-  const optAdminText = document.getElementById('crispOptAdminText');
-  const optClearHistory = document.getElementById('crispOptClearHistory');
-  const clearChatChip = document.getElementById('crispClearChatChip');
-  const optOpenNewTicket = document.getElementById('crispOptOpenNewTicket');
 
   // Ticket creation form elements
   const ticketFormView = document.getElementById('ticketCreateFormView');
-  const btnNewTicketFormToggle = document.getElementById('btnNewTicketFormToggle');
   const btnSubmitNewTicket = document.getElementById('btnSubmitNewTicket');
-  const ticketCategorySelect = document.getElementById('ticketCategorySelect');
-  const ticketDiscordUsernameInput = document.getElementById('ticketDiscordUsernameInput');
-  const ticketInitialMessageInput = document.getElementById('ticketInitialMessageInput');
-  const crispMessagesPill = document.getElementById('crispMessagesPill');
-  const crispOwnerSecretBtn = document.getElementById('crispOwnerSecretBtn');
+
+  // Sound Toggle Logic
+  let isSoundEnabled = localStorage.getItem('syntax_chat_sound_enabled') !== 'false';
+  function updateSoundButtonUI() {
+    if (!soundToggleBtn) return;
+    if (isSoundEnabled) {
+      soundToggleBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      `;
+      soundToggleBtn.title = "Bildirim Sesi: Açık";
+      soundToggleBtn.style.color = "#10b981";
+    } else {
+      soundToggleBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      `;
+      soundToggleBtn.title = "Bildirim Sesi: Kapalı";
+      soundToggleBtn.style.color = "#64748b";
+    }
+  }
+  updateSoundButtonUI();
+
+  if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', () => {
+      isSoundEnabled = !isSoundEnabled;
+      localStorage.setItem('syntax_chat_sound_enabled', isSoundEnabled ? 'true' : 'false');
+      updateSoundButtonUI();
+      if (window.showToast) {
+        showToast(isSoundEnabled ? 'Bildirim sesleri açıldı.' : 'Bildirim sesleri kapatıldı.', 'volume-2');
+      }
+    });
+  }
+
+  // Minimize button
+  if (minimizeBtn) {
+    minimizeBtn.addEventListener('click', () => toggleWidget(false));
+  }
+
+  // Rating buttons
+  if (rateUp) {
+    rateUp.addEventListener('click', () => {
+      if (window.showToast) showToast('Geri bildiriminiz için teşekkürler! ⭐ (İyi)', 'check-circle');
+    });
+  }
+  if (rateDown) {
+    rateDown.addEventListener('click', () => {
+      if (window.showToast) showToast('Geri bildiriminiz kaydedildi, ekibimize iletildi.', 'check-circle');
+    });
+  }
 
   function showTicketForm() {
     if (ticketFormView && messagesContainer) {
@@ -2689,76 +2757,6 @@ function initCrispChat() {
       if (crispFooter) crispFooter.style.display = 'none';
       const quickChips = document.getElementById('crispCustomerQuickChips');
       if (quickChips) quickChips.style.display = 'none';
-      const curUser = (typeof getCurrentUser === 'function' && getCurrentUser());
-      const chatKey = getCurrentChatKey();
-
-      // Check if user already has an active open ticket
-      if (hasUserActiveTicket(chatKey)) {
-        const meta = getTicketMeta(chatKey);
-        const chName = meta.channelName || generateTicketChannelName(meta.category, curUser ? curUser.username : 'musteri');
-        ticketFormView.innerHTML = `
-          <div class="ticket-active-blocked-wrap">
-            <div class="ticket-active-badge-icon">⚠️</div>
-            <div class="ticket-active-title">Zaten Açık Bir Destek Talebiniz Var!</div>
-            <div class="ticket-active-channel-tag">#${escapeHtml(chName)}</div>
-            <div class="ticket-active-desc">
-              Syntax Software kuralları gereği, işlemlerin çakışmaması ve hızlı yanıt verilebilmesi için <strong>aynı anda yalnızca 1 aktif destek talebi</strong> açabilirsiniz.
-              <br><br>
-              Talebiniz yetkili ekibimizce takibe alınmıştır. Lütfen mevcut talebiniz üzerinden yazışmaya devam ediniz.
-            </div>
-            <div class="ticket-active-meta-row">
-              <span>Talep No: <strong>#ticket-${meta.ticketNum}</strong></span>
-              <span>Kategori: <strong>${escapeHtml(meta.category || 'Genel Destek')}</strong></span>
-              <span>Durum: <strong style="color:#34d399;">● AKTİF</strong></span>
-            </div>
-            <button type="button" class="btn-goto-active-ticket" id="btnGoToActiveTicket">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              <span>Mevcut Talebime Git & Mesaj Yaz</span>
-            </button>
-          </div>
-        `;
-        document.getElementById('btnGoToActiveTicket')?.addEventListener('click', () => {
-          showMessagesView();
-        });
-        return;
-      }
-
-      // If no active ticket, restore form view
-      if (!document.getElementById('ticketCategorySelect')) {
-        ticketFormView.innerHTML = `
-          <div style="background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.35); border-radius:10px; padding:0.75rem 0.9rem; font-size:0.78rem; color:#d8b4fe; line-height:1.4;">
-            🎫 <strong>Yeni Destek Bileti Açın:</strong> Talebiniz anında size özel <strong>#web-kategori-kişi</strong> kanalına iletilir. Sadece Yönetici ve Kurucu (Owner) erişebilir.
-          </div>
-          <div>
-            <label class="ticket-form-label">Destek Talebi Konusu:</label>
-            <select class="ticket-form-select" id="ticketCategorySelect">
-              <option value="Satın Alım & Lisans">🛒 Satın Alım & Sipariş Kontrolü</option>
-              <option value="Lisans / HWID Sıfırlama">🔑 Lisans Aktivasyonu / HWID Sıfırlama</option>
-              <option value="Teknik Destek & Kurulum">🛠️ Kurulum, BIOS / HVCI Desteği</option>
-              <option value="Undetected & Durum">🟢 Yazılım Durumu ve Bilgi</option>
-              <option value="Diğer Sorular">❓ Genel / Diğer Konular</option>
-            </select>
-          </div>
-          <div>
-            <label class="ticket-form-label">Adınız veya Discord Kullanıcı Adınız:</label>
-            <input type="text" class="ticket-form-input" id="ticketDiscordUsernameInput" placeholder="Örn: NOXY veya @kullanici#0001">
-          </div>
-          <div>
-            <label class="ticket-form-label">Mesajınız / Destek Talebiniz:</label>
-            <textarea class="ticket-form-textarea" id="ticketInitialMessageInput" rows="3" placeholder="Sorununuzu veya talebinizi detaylıca belirtiniz..."></textarea>
-          </div>
-          <button type="button" class="btn-submit-new-ticket" id="btnSubmitNewTicket">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            <span>Ticket Aç (Özel Kanala Gönder)</span>
-          </button>
-        `;
-        bindTicketSubmitButton();
-      }
-
-      const inpDc = document.getElementById('ticketDiscordUsernameInput');
-      if (curUser && inpDc && !inpDc.value) {
-        inpDc.value = curUser.username;
-      }
     }
   }
 
@@ -2773,51 +2771,12 @@ function initCrispChat() {
     }
   }
 
-  if (btnNewTicketFormToggle) {
-    btnNewTicketFormToggle.onclick = () => {
-      if (ticketFormView && (ticketFormView.style.display === 'flex' || ticketFormView.style.display === 'block')) {
-        showMessagesView();
-      } else {
-        showTicketForm();
-      }
-    };
-  }
-
-  if (ticketFormView) {
-    ticketFormView.addEventListener('wheel', (e) => {
-      if (ticketFormView.scrollHeight > ticketFormView.clientHeight) {
-        ticketFormView.scrollTop += e.deltaY;
-      }
-    }, { passive: true });
-  }
-
-  if (crispMessagesPill) {
-    crispMessagesPill.onclick = () => showMessagesView();
-  }
-
   if (optOpenNewTicket) {
     optOpenNewTicket.onclick = () => {
       if (optionsMenu) optionsMenu.style.display = 'none';
       showTicketForm();
     };
   }
-
-  // Update Owner secret button in chat header
-  function updateChatOwnerButton() {
-    const curUser = (typeof getCurrentUser === 'function' && getCurrentUser());
-    if (crispOwnerSecretBtn) {
-      if (curUser && curUser.role === 'owner') {
-        crispOwnerSecretBtn.style.display = 'inline-flex';
-        crispOwnerSecretBtn.onclick = () => {
-          if (typeof openOwnerSecretModal === 'function') openOwnerSecretModal();
-        };
-      } else {
-        crispOwnerSecretBtn.style.display = 'none';
-      }
-    }
-  }
-  updateChatOwnerButton();
-  window.addEventListener('storage', updateChatOwnerButton);
 
   function handleTicketSubmit() {
     const catInp = document.getElementById('ticketCategorySelect');
@@ -2836,78 +2795,43 @@ function initCrispChat() {
 
     const curUser = (typeof getCurrentUser === 'function' && getCurrentUser());
     const chatKey = getCurrentChatKey();
-
-    // Enforce 1 active ticket limit
-    if (hasUserActiveTicket(chatKey)) {
-      if (typeof showToast === 'function') {
-        showToast('Zaten açık bir destek talebiniz var! Yeni talep açmadan önce lütfen mevcut talebinizi tamamlayın.', 'alert-circle');
-      }
-      showTicketForm();
-      return;
-    }
-
-    // Format dedicated channel name: web-{kategori}-{kişi}
-    const channelName = generateTicketChannelName(cat, dcUser);
     const ticketNum = Math.floor(1000 + Math.random() * 9000);
-
-    const dossier = (typeof collectFullUserDossier === 'function') ? collectFullUserDossier(curUser) : {};
-    dossier.category = cat;
-    dossier.discordUser = dcUser;
-    dossier.channelName = channelName;
-
-    // Save ticket meta with channelName and open status
-    const meta = {
-      status: 'open',
-      ticketNum: ticketNum,
-      channelName: channelName,
-      category: cat,
-      categorySlug: getTicketCategorySlug(cat),
-      claimedBy: null,
-      createdAt: new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-      closedAt: null
-    };
-    saveTicketMeta(chatKey, meta);
+    const activeStaff = getActiveStaffAgent();
 
     const formattedFirstMsg = `[Kategori: ${cat}] ${msg}`;
-
-    // Save to local message history
     saveMessage('user', formattedFirstMsg, formatCurrentTime());
+
+    const botGreeting = `🎫 Destek talebiniz (#${ticketNum} - ${cat}) kaydedildi.
+Yetkili ekibimiz en kısa sürede canlı olarak yanıt verecektir.`;
+    saveMessage('bot', botGreeting, formatCurrentTime());
+
     renderHistory();
     showMessagesView();
 
-    // Open ticket in Discord bot bridge on port 5055 (private web-{kategori}-{kişi} channel)
     fetch('http://127.0.0.1:5055/api/ticket/open', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chatKey: chatKey,
         username: dcUser,
-        channelName: channelName,
-        category: getTicketCategorySlug(cat),
+        category: cat,
         subject: cat,
-        message: formattedFirstMsg,
-        userDossier: dossier
+        message: formattedFirstMsg
       })
-    }).then(r => r.json()).then(res => {
-      if (res && res.success) {
-        localStorage.setItem('syntax_dc_ticket_opened_' + chatKey, 'true');
-      }
     }).catch(() => {});
 
     if (typeof showToast === 'function') {
-      showToast(`Destek talebiniz oluşturuldu! Özel kanal #${channelName} yetkililere iletildi.`, 'check-circle');
+      showToast(`Destek talebiniz oluşturuldu! Yetkililere iletildi.`, 'check-circle');
     }
 
     if (msgInp) msgInp.value = '';
   }
 
-  function bindTicketSubmitButton() {
-    const btn = document.getElementById('btnSubmitNewTicket');
-    if (btn) btn.onclick = handleTicketSubmit;
+  if (btnSubmitNewTicket) {
+    btnSubmitNewTicket.onclick = handleTicketSubmit;
   }
-  bindTicketSubmitButton();
 
-  // Customer quick topic chips
+  // Quick chips
   const customerQuickChips = widget.querySelectorAll('.crisp-user-chip');
   customerQuickChips.forEach(chip => {
     chip.onclick = () => {
@@ -2919,8 +2843,9 @@ function initCrispChat() {
     };
   });
 
-  // Audio chime synthesized via Web Audio API for incoming staff messages
+  // Synthesized chime for incoming staff messages
   function playStaffChime() {
+    if (localStorage.getItem('syntax_chat_sound_enabled') === 'false') return;
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (!AudioCtx) return;
@@ -2947,7 +2872,7 @@ function initCrispChat() {
     } catch (e) {}
   }
 
-  // --- STATE & PERSISTENCE ---
+  // State & persistence
   function getChatKeyForUser(username) {
     if (!username) return 'syntax_chat_anonymous';
     return 'syntax_chat_user_' + username.toLowerCase().replace(/[^a-z0-9_]/g, '_');
@@ -2955,33 +2880,48 @@ function initCrispChat() {
   function getCurrentChatKey() {
     try {
       const cu = JSON.parse(localStorage.getItem('syntax_current_user_v3') || 'null');
-      return getChatKeyForUser(cu ? cu.username : null);
+      if (cu && cu.username) return getChatKeyForUser(cu.username);
+      let guestId = localStorage.getItem('syntax_chat_guest_id');
+      if (!guestId) {
+        guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
+        localStorage.setItem('syntax_chat_guest_id', guestId);
+      }
+      return 'syntax_chat_' + guestId;
     } catch (e) { return 'syntax_chat_anonymous'; }
   }
   window._getChatKeyForUser = getChatKeyForUser;
   window._getChatKeyForAnonymous = () => 'syntax_chat_anonymous';
 
-  const ADMIN_STORAGE_KEY = 'syntax_chat_admin_mode';
-
-  let isAdminMode = localStorage.getItem(ADMIN_STORAGE_KEY) === 'true';
-
   function getHistory() {
     try {
       const raw = localStorage.getItem(getCurrentChatKey());
-      if (raw) return JSON.parse(raw);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
     } catch (e) {}
+    const staff = getActiveStaffAgent();
     return [
       {
         sender: 'bot',
-        text: '👋 Merhaba! Syntax Software canlı destek hattına hoş geldiniz. Mesajınız anında Discord yetkili ekibimize köprülenir. Size nasıl yardımcı olabiliriz?',
-        time: ''
+        author: staff.name,
+        badge: staff.title || 'Yetkili Danışman',
+        text: `👋 Merhaba! Ben ${staff.name}, Syntax Software canlı destek hattına hoş geldiniz. Size nasıl yardımcı olabilirim?`,
+        time: formatCurrentTime()
       }
     ];
   }
 
   function saveMessage(sender, text, time) {
     const list = getHistory();
-    list.push({ sender, text, time });
+    const staff = getActiveStaffAgent();
+    list.push({
+      sender,
+      text,
+      time,
+      author: sender === 'bot' || sender === 'staff' ? staff.name : undefined,
+      badge: sender === 'bot' || sender === 'staff' ? 'Yetkili Danışman' : undefined
+    });
     localStorage.setItem(getCurrentChatKey(), JSON.stringify(list));
     window.dispatchEvent(new CustomEvent('syntax_chat_updated', { detail: { key: getCurrentChatKey() } }));
   }
@@ -2995,36 +2935,40 @@ function initCrispChat() {
     const row = document.createElement('div');
     if (msg.sender === 'user') {
       row.className = 'crisp-msg-row outgoing';
-      row.innerHTML = `<div class="crisp-msg-bubble">${escapeHtml(msg.text)}</div>`;
-    } else if (msg.sender === 'staff' || msg.sender === 'admin') {
-      const isDiscord = msg.source === 'discord' || (msg.author && (msg.author.toLowerCase().includes('discord') || msg.author.includes('#')));
-      const authorTitle = msg.author || 'Syntax Destek Yetkilisi';
-      row.className = 'crisp-msg-row incoming staff-row' + (isDiscord ? ' discord-staff' : '');
       row.innerHTML = `
-        <div class="crisp-msg-avatar staff-avatar" style="${isDiscord ? 'background:#5865F2 !important; box-shadow:0 0 10px rgba(88,101,242,0.6);' : ''}" title="${escapeHtml(authorTitle)}">
-          ${isDiscord ? `
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="#ffffff"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-          ` : `
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          `}
+        <div class="crisp-msg-bubble">
+          <div class="crisp-msg-text">${escapeHtml(msg.text)}</div>
         </div>
-        <div class="crisp-msg-bubble staff-bubble">
-          <div class="crisp-staff-badge-row">
-            <span class="crisp-staff-name" style="${isDiscord ? 'color:#5865F2;' : ''}">${escapeHtml(authorTitle)}</span>
-            <span class="crisp-admin-pill" style="${isDiscord ? 'background:#5865F2 !important; color:#ffffff !important;' : ''}">${isDiscord ? 'DISCORD' : 'YÖNETİCİ'}</span>
-          </div>
-          <div class="crisp-staff-text">${escapeHtml(msg.text)}</div>
-          ${msg.time ? `<div class="crisp-staff-timestamp">${escapeHtml(msg.time)}</div>` : ''}
+        <div class="crisp-msg-time-row outgoing">
+          <span>${escapeHtml(msg.time || formatCurrentTime())}</span>
+          <span class="read-ticks" title="İletildi ve Okundu">✓✓</span>
         </div>
       `;
     } else {
-      // bot
+      // Staff / Bot incoming
+      const activeStaff = getActiveStaffAgent();
+      let authorTitle = msg.author || activeStaff.name;
+      if (authorTitle.toLowerCase() === 'zeynep') authorTitle = activeStaff.name;
+      const badgeTitle = msg.badge || 'Yetkili Danışman';
+      const initial = authorTitle.charAt(0).toUpperCase();
+
       row.className = 'crisp-msg-row incoming';
       row.innerHTML = `
-        <div class="crisp-msg-avatar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        <div class="crisp-msg-avatar" style="background:${activeStaff.avatarColor || '#10b981'};">
+          <span style="font-weight:800; font-size:0.85rem; color:#ffffff;">${initial}</span>
         </div>
-        <div class="crisp-msg-bubble">${escapeHtml(msg.text)}</div>
+        <div class="crisp-msg-content-wrap">
+          <div class="crisp-msg-author-header">
+            <span class="crisp-author-name">${escapeHtml(authorTitle)}</span>
+            <span class="crisp-author-badge">${escapeHtml(badgeTitle)}</span>
+          </div>
+          <div class="crisp-msg-bubble">
+            <div class="crisp-msg-text">${escapeHtml(msg.text)}</div>
+          </div>
+          <div class="crisp-msg-time-row">
+            <span>${escapeHtml(msg.time || formatCurrentTime())}</span>
+          </div>
+        </div>
       `;
     }
     return row;
@@ -3047,45 +2991,17 @@ function initCrispChat() {
     if (window.showToast) showToast('Sohbet geçmişi temizlendi.', 'trash-2');
   }
 
-  function setAdminMode(active, notify = false) {
-    isAdminMode = !!active;
-    localStorage.setItem(ADMIN_STORAGE_KEY, isAdminMode ? 'true' : 'false');
-
-    if (isAdminMode) {
-      widget.classList.add('admin-active');
-      if (adminToggleBtn) adminToggleBtn.classList.add('active');
-      if (adminBanner) adminBanner.style.display = 'flex';
-      if (adminQuickbar) adminQuickbar.style.display = 'flex';
-      if (textarea) textarea.placeholder = 'Yönetici olarak cevap yazın... (Enter)';
-      if (optAdminText) optAdminText.textContent = 'Müşteri Moduna Dön';
-      if (notify && window.showToast) {
-        showToast('Yönetici Modu Açık: Artık yetkili olarak yanıt veriyorsunuz.', 'shield-check');
-      }
-    } else {
-      widget.classList.remove('admin-active');
-      if (adminToggleBtn) adminToggleBtn.classList.remove('active');
-      if (adminBanner) adminBanner.style.display = 'none';
-      if (adminQuickbar) adminQuickbar.style.display = 'none';
-      if (textarea) textarea.placeholder = 'Sorunuzu veya mesajınızı buraya yazın... (Enter)';
-      if (optAdminText) optAdminText.textContent = 'Yönetici Modunu Aç';
-      if (notify && window.showToast) {
-        showToast('Müşteri Moduna Geçildi.', 'user');
-      }
-    }
-  }
-
   // Initial load
   renderHistory();
-  setAdminMode(isAdminMode, false);
 
-  // Bi-directional Discord Bridge Poller (Fetch Discord responses back to web)
+  // Bi-directional Discord Bridge Poller
   let _dcSyncInterval = null;
   function pollDiscordTicketReplies(fast = false) {
     if (_dcSyncInterval) clearInterval(_dcSyncInterval);
     const intervalMs = fast ? 1500 : 4000;
     _dcSyncInterval = setInterval(async () => {
       const curKey = getCurrentChatKey();
-      if (!curKey || curKey === 'syntax_chat_anonymous') return;
+      if (!curKey) return;
       try {
         const res = await fetch(`http://127.0.0.1:5055/api/ticket/messages?chatKey=${encodeURIComponent(curKey)}`);
         if (!res.ok) return;
@@ -3103,11 +3019,11 @@ function initCrispChat() {
               if (!exists) {
                 localList.push({
                   sender: 'staff',
-                  author: srvMsg.author || 'Discord Destek Yetkilisi',
+                  author: srvMsg.author || activeStaff.name,
+                  badge: 'Yetkili Danışman',
                   text: srvMsg.text,
                   time: srvMsg.time || formatCurrentTime(),
-                  timestamp: srvMsg.timestamp || Date.now(),
-                  source: 'discord'
+                  timestamp: srvMsg.timestamp || Date.now()
                 });
                 updated = true;
               }
@@ -3117,28 +3033,18 @@ function initCrispChat() {
             localStorage.setItem(curKey, JSON.stringify(localList));
             renderHistory();
             playStaffChime();
-            const statusText = document.getElementById('crispTicketStatusText');
-            if (statusText) statusText.textContent = '● Discord Yetkilisi Yanıtladı';
             if (window.showToast) {
-              window.showToast('💬 Discord Yetkilisinden yeni bilet yanıtı geldi!', 'message-circle');
+              window.showToast('💬 Destek yetkilisinden yeni yanıt geldi!', 'message-circle');
             }
           }
         }
-      } catch (err) {
-        // Bridge might be idle or offline
-      }
+      } catch (err) {}
     }, intervalMs);
   }
   pollDiscordTicketReplies(false);
 
-  // Real-time synchronization: update Crisp live chat when admin replies or ticket changes
   window.addEventListener('syntax_chat_updated', (e) => {
     if (!e.detail || !e.detail.key || e.detail.key === getCurrentChatKey()) {
-      renderHistory();
-    }
-  });
-  window.addEventListener('storage', (e) => {
-    if (e.key === getCurrentChatKey()) {
       renderHistory();
     }
   });
@@ -3156,6 +3062,8 @@ function initCrispChat() {
     pollDiscordTicketReplies(isOpen);
 
     if (isOpen) {
+      showMessagesView();
+      renderHistory();
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
       if (textarea) {
         setTimeout(() => textarea.focus(), 150);
@@ -3184,92 +3092,6 @@ function initCrispChat() {
     }
   });
 
-  // Crisp Official Live Chat Bridge & Messages Pill Link
-  const messagesPill = document.getElementById('crispMessagesPill');
-  const optConnectCrisp = document.getElementById('crispOptConnectCrisp');
-
-  window.$crisp = window.$crisp || [];
-  window.CRISP_WEBSITE_ID = window.CRISP_WEBSITE_ID || localStorage.getItem('syntax_crisp_website_id') || "";
-
-  function loadOfficialCrisp(id) {
-    if (!id) return;
-    window.CRISP_WEBSITE_ID = id;
-    localStorage.setItem('syntax_crisp_website_id', id);
-    if (!document.getElementById('crispOfficialScript')) {
-      const s = document.createElement("script");
-      s.id = 'crispOfficialScript';
-      s.src = "https://client.crisp.chat/l.js";
-      s.async = 1;
-      document.getElementsByTagName("head")[0].appendChild(s);
-    }
-    try {
-      if (window.$crisp && window.$crisp.push) {
-        window.$crisp.push(['do', 'chat:open']);
-      }
-    } catch(e) {}
-  }
-
-  if (window.CRISP_WEBSITE_ID) {
-    loadOfficialCrisp(window.CRISP_WEBSITE_ID);
-  }
-
-  function handleCrispConnectAction() {
-    if (window.$crisp && window.CRISP_WEBSITE_ID) {
-      try {
-        window.$crisp.push(['do', 'chat:open']);
-        if (window.showToast) showToast('Crisp Canlı Destek açıldı.', 'check');
-        return;
-      } catch(e) {}
-    }
-    const currentId = window.CRISP_WEBSITE_ID || '';
-    const userPrompt = prompt('Crisp Canlı Destek Website ID giriniz (veya doğrudan Crisp paneline gitmek için Tamam\'a basınız):', currentId);
-    if (userPrompt && userPrompt.trim()) {
-      loadOfficialCrisp(userPrompt.trim());
-      if (window.showToast) showToast('Crisp canlı desteği başarıyla bağlandı!', 'check');
-    } else if (userPrompt !== null) {
-      window.open('https://go.crisp.chat', '_blank');
-    }
-  }
-
-  if (messagesPill) {
-    messagesPill.addEventListener('click', () => {
-      handleCrispConnectAction();
-    });
-    messagesPill.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        handleCrispConnectAction();
-      }
-    });
-  }
-
-  if (optConnectCrisp) {
-    optConnectCrisp.addEventListener('click', () => {
-      if (optionsMenu) optionsMenu.style.display = 'none';
-      handleCrispConnectAction();
-    });
-  }
-
-  // Admin button listeners
-  if (adminToggleBtn) {
-    adminToggleBtn.addEventListener('click', () => {
-      setAdminMode(!isAdminMode, true);
-    });
-  }
-
-  if (adminExitBtn) {
-    adminExitBtn.addEventListener('click', () => {
-      setAdminMode(false, true);
-    });
-  }
-
-  if (optToggleAdmin) {
-    optToggleAdmin.addEventListener('click', () => {
-      setAdminMode(!isAdminMode, true);
-      if (optionsMenu) optionsMenu.style.display = 'none';
-    });
-  }
-
   if (optClearHistory) {
     optClearHistory.addEventListener('click', () => {
       clearHistory();
@@ -3277,185 +3099,60 @@ function initCrispChat() {
     });
   }
 
-  if (clearChatChip) {
-    clearChatChip.addEventListener('click', () => {
-      clearHistory();
-    });
-  }
-
-  // Quick reply chips
-  if (adminQuickbar) {
-    adminQuickbar.querySelectorAll('.crisp-quick-chip[data-reply]').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const replyText = chip.getAttribute('data-reply');
-        sendMessage(replyText);
-      });
-    });
-  }
-
-  // Helper: Collect complete user registration dossier for Discord Embed (CONFIDENTIAL - never shown to user in web chat)
-  function collectFullUserDossier(curUser) {
-    if (!curUser) {
-      return {
-        fullName: 'Ziyaretçi (Giriş Yapılmamış)',
-        username: 'misafir',
-        email: 'web-ziyaretci@syntaxsoftware.com',
-        phone: 'Belirtilmemiş',
-        role: 'Ziyaretçi',
-        createdAt: new Date().toLocaleDateString('tr-TR'),
-        ip: 'Web İstemcisi (' + (window.location.hostname || 'localhost') + ')',
-        deviceInfo: navigator.userAgent ? (navigator.userAgent.includes('Windows') ? 'Windows PC / Chrome' : navigator.userAgent.substring(0, 40)) : 'Bilinmiyor',
-        licenses: [],
-        orders: []
-      };
-    }
-
-    let allUsers = [];
-    try {
-      allUsers = JSON.parse(localStorage.getItem('syntax_users_v3') || '[]');
-    } catch (e) {}
-    const fullUser = allUsers.find(u => u.username && curUser.username && u.username.toLowerCase() === curUser.username.toLowerCase()) || curUser;
-
-    let allOrders = [];
-    try {
-      allOrders = JSON.parse(localStorage.getItem('syntax_shopier_orders') || '[]');
-    } catch (e) {}
-    const userOrders = allOrders.filter(o => 
-      (o.customer && curUser.username && o.customer.toLowerCase() === curUser.username.toLowerCase()) ||
-      (o.email && curUser.email && o.email.toLowerCase() === curUser.email.toLowerCase()) ||
-      (o.phone && curUser.phone && o.phone === curUser.phone)
-    );
-
-    return {
-      fullName: fullUser.fullName || fullUser.name || curUser.username,
-      username: curUser.username,
-      email: fullUser.email || curUser.email || 'Belirtilmemiş',
-      phone: fullUser.phone || curUser.phone || 'Belirtilmemiş',
-      role: fullUser.role === 'owner' ? 'Owner (Kurucu)' : (fullUser.role === 'admin' ? 'Admin' : (fullUser.rank || 'Müşteri')),
-      createdAt: fullUser.createdAt || fullUser.registeredDate || new Date().toLocaleDateString('tr-TR'),
-      ip: 'Web İstemcisi (' + (window.location.hostname || 'localhost') + ')',
-      deviceInfo: navigator.userAgent ? (navigator.userAgent.includes('Windows') ? 'Windows PC / Chrome' : navigator.userAgent.substring(0, 45)) : 'Bilinmiyor',
-      licenses: fullUser.licenses || [],
-      orders: userOrders
-    };
-  }
-
   function sendMessage(textOverride) {
     const text = (textOverride || (textarea ? textarea.value : '')).trim();
     if (!text) return;
 
-    let curUser = null;
-    try {
-      curUser = JSON.parse(localStorage.getItem('syntax_current_user_v3'));
-    } catch (e) {}
-
-    if (!isAdminMode) {
-      if (!curUser) {
-        if (window.showToast) window.showToast('Canlı destek ve sohbete katılabilmek için lütfen önce üye girişi yapınız!', 'alert-circle');
-        if (typeof window.openAuthModal === 'function') {
-          window.openAuthModal('user');
-        }
-        return;
-      }
-    }
-
     const timeStr = formatCurrentTime();
-
-    if (isAdminMode) {
-      // Send as verified Admin / Staff
-      const msgObj = { sender: 'staff', text: text, time: timeStr, author: (curUser && curUser.username) ? curUser.username : 'Yönetici' };
-      saveMessage('staff', text, timeStr);
-      messagesContainer.appendChild(createMessageElement(msgObj));
-      if (!textOverride && textarea) {
-        textarea.value = '';
-        textarea.style.height = '38px';
-      }
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      if (window.showToast) showToast('Yönetici mesajı iletildi.', 'check');
-
-      // Forward to Discord bridge as staff reply
-      const cKey = getCurrentChatKey();
-      fetch('http://127.0.0.1:5055/api/ticket/message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chatKey: cKey,
-          username: curUser ? curUser.username : 'Yönetici',
-          sender: 'staff',
-          text: text
-        })
-      }).catch(() => {});
-      return;
-    }
-
-    // Customer message
-    // CRITICAL: Only the text message is rendered to the user. Dossier is NEVER rendered on web!
-    const userMsgObj = { sender: 'user', text: text, time: timeStr };
     saveMessage('user', text, timeStr);
+    const userMsgObj = { sender: 'user', text: text, time: timeStr };
     messagesContainer.appendChild(createMessageElement(userMsgObj));
 
     if (!textOverride && textarea) {
       textarea.value = '';
-      textarea.style.height = '38px';
+      textarea.style.height = '26px';
     }
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    // --- DISCORD BOT INTEGRATION DISPATCH ---
+    // Send to Discord bot bridge
     const chatKey = getCurrentChatKey();
-    const isTicketAlreadyOpened = localStorage.getItem('syntax_dc_ticket_opened_' + chatKey);
+    let curUser = null;
+    try {
+      curUser = JSON.parse(localStorage.getItem('syntax_current_user_v3'));
+    } catch (e) {}
+    const authorName = curUser ? (curUser.username || curUser.fullName || 'Müşteri') : 'Ziyaretçi';
 
-    if (!isTicketAlreadyOpened) {
-      // First message: Open ticket in Discord with FULL USER REGISTRATION DOSSIER
-      const userDossier = collectFullUserDossier(curUser);
-      fetch('http://127.0.0.1:5055/api/ticket/open', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chatKey: chatKey,
-          username: curUser ? curUser.username : 'Müşteri',
-          message: text,
-          userDossier: userDossier
-        })
-      }).then(r => r.json()).then(res => {
-        if (res && res.success) {
-          localStorage.setItem('syntax_dc_ticket_opened_' + chatKey, 'true');
-          console.log('[Discord Bridge] Ticket embed sent to Discord:', res);
-        }
-      }).catch(err => {
-        console.log('[Discord Bridge] Offline/local note:', err.message);
-      });
-    } else {
-      // Subsequent messages from customer: Forward to Discord
-      fetch('http://127.0.0.1:5055/api/ticket/message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chatKey: chatKey,
-          username: curUser ? curUser.username : 'Müşteri',
-          sender: 'user',
-          text: text
-        })
-      }).catch(() => {});
-    }
+    fetch('http://127.0.0.1:5055/api/ticket/message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chatKey: chatKey,
+        username: authorName,
+        sender: 'user',
+        text: text
+      })
+    }).catch(() => {});
 
-    // Show typing indicator
+    // Show Typing Indicator
+    const activeStaff = getActiveStaffAgent();
     const typingIndicator = document.createElement('div');
-    typingIndicator.className = 'crisp-msg-row incoming';
+    typingIndicator.className = 'crisp-msg-row incoming typing-row';
     typingIndicator.id = 'crispTyping';
     typingIndicator.innerHTML = `
-      <div class="crisp-msg-avatar">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+      <div class="crisp-msg-avatar" style="background:${activeStaff.avatarColor || '#10b981'};">
+        <span style="font-weight:800; font-size:0.85rem; color:#ffffff;">${activeStaff.initial}</span>
       </div>
       <div class="crisp-typing-bubble">
         <div class="crisp-typing-dot"></div>
         <div class="crisp-typing-dot"></div>
         <div class="crisp-typing-dot"></div>
       </div>
+      <div class="typing-text">${escapeHtml(activeStaff.name)} yazıyor...</div>
     `;
     messagesContainer.appendChild(typingIndicator);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    // Bot response
+    // Intelligent Bot Auto-Response
     setTimeout(() => {
       const typingElem = document.getElementById('crispTyping');
       if (typingElem) typingElem.remove();
@@ -3463,27 +3160,39 @@ function initCrispChat() {
       let reply = "Mesajınız için teşekkürler! Destek ekibimiz aktif olduğunda size buradan dönüş yapacaktır. Anında canlı destek almak için resmi Discord sunucumuza da katılabilirsiniz: https://discord.gg/wFaNxzyMU";
 
       const lower = text.toLowerCase();
-      if (lower.includes('spoofer') || lower.includes('hwid') || lower.includes('van 152') || lower.includes('val 5')) {
-        reply = " Spoofer Seçeneklerimiz:\n• t3mp spoofer (Onetime: 1.200 TL / Lifetime: 1.700 TL)\n• p3rm spoofer (Onetime: 1.500 TL / Lifetime: 2.500 TL)\nVAN 152 & VAL 5 bypass tam desteklidir.";
+      if (lower.includes('taksit') || lower.includes('kredi kart') || lower.includes('ödeme') || lower.includes('odeme') || lower.includes('kart')) {
+        reply = "İyzico ve Shopier altyapımız üzerinden tüm kredi kartlarına 12 aya varan taksit imkanı sunulmaktadır. Havale/EFT ve Kripto ile de komisyonsuz ödeme yapabilirsiniz.";
+      } else if (lower.includes('spoofer') || lower.includes('hwid') || lower.includes('van 152') || lower.includes('val 5')) {
+        reply = "🛡️ Spoofer Seçeneklerimiz:
+• t3mp spoofer (Onetime: 1.200 TL / Lifetime: 1.700 TL)
+• p3rm spoofer (Onetime: 1.500 TL / Lifetime: 2.500 TL)
+VAN 152 & VAL 5 bypass tam desteklidir.";
       } else if (lower.includes('emulator') || lower.includes('vanguard')) {
-        reply = " Vanguard Emulator: 3 Günlük $39.99, 1 Haftalık $69.99, 1 Aylık $199.99, Lifetime $400. Format veya BIOS gerektirmez, VAN 102, VAL 5, VAN 79, VAN 152 hatalarını çözer!";
+        reply = "⚡ Vanguard Emulator: 3 Günlük $39.99, 1 Haftalık $69.99, 1 Aylık $199.99, Lifetime $400. Format veya BIOS gerektirmez, VAN 102, VAL 5, VAN 79, VAN 152 hatalarını çözer!";
       } else if (lower.includes('cs') || lower.includes('cs2') || lower.includes('counter')) {
-        reply = " CS2 External & Private Hilelerimiz:\n• Günlük: 340 TL\n• 3 Günlük: 1.000 TL\n• 7 Günlük: 1.500 TL\n• 30 Günlük: 2.300 TL\nAimbot, ESP, Stream Proof ve tam HVCI/TPM uyumludur.";
+        reply = "🎯 CS2 External & Private Hilelerimiz:
+• Günlük: 340 TL
+• 3 Günlük: 1.000 TL
+• 7 Günlük: 1.500 TL
+• 30 Günlük: 2.300 TL
+Aimbot, ESP, Stream Proof ve tam HVCI/TPM uyumludur.";
       } else if (lower.includes('fiyat') || lower.includes('ücret') || lower.includes('kaç') || lower.includes('tl') || lower.includes('para') || lower.includes('fiyatı')) {
         reply = "Tüm güncel Valorant ve Counter-Strike 2 yazılımlarımızın fiyatlarını 'Ürünler' (Mağaza) sayfamızdan inceleyebilir veya Discord sunucumuzdan destek alabilirsiniz!";
       } else if (lower.includes('ban') || lower.includes('risk') || lower.includes('durum') || lower.includes('güven')) {
         reply = "Tüm ürünlerimizin anlık durumunu 'Durum' sayfamızdan kontrol edebilirsiniz. p3rm, t3mp spoofer, emulator ve slotted ürünlerimiz şu anda tamamen UNDETECTED durumdadır.";
       } else if (lower.includes('bayi') || lower.includes('reseller') || lower.includes('panel')) {
-        reply = " Bayi Programı: Kendi markanız, otomatik API teslimatı ve sınırsız lisans üretimi ile %100 white-label panel başlatabilirsiniz. 'Bayi' sayfamızdan detayları inceleyebilirsiniz.";
+        reply = "🚀 Bayi Programı: Kendi markanız, otomatik API teslimatı ve sınırsız lisans üretimi ile %100 white-label panel başlatabilirsiniz. 'Bayi' sayfamızdan detayları inceleyebilirsiniz.";
       } else if (lower.includes('selam') || lower.includes('merhaba') || lower.includes('sa')) {
-        reply = "Merhaba! Syntax Software canlı desteğe hoş geldiniz. Size hangi ürünümüz hakkında yardımcı olabiliriz?";
+        reply = `Merhaba! Ben ${activeStaff.name}. Syntax Software canlı desteğe hoş geldiniz. Size hangi ürünümüz hakkında yardımcı olabilirim?`;
       }
 
-      saveMessage('bot', reply, formatCurrentTime());
-      const botMsgObj = { sender: 'bot', text: reply, time: '' };
+      const timeNow = formatCurrentTime();
+      saveMessage('bot', reply, timeNow);
+      const botMsgObj = { sender: 'bot', text: reply, time: timeNow, author: activeStaff.name, badge: 'Yetkili Danışman' };
       messagesContainer.appendChild(createMessageElement(botMsgObj));
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }, 1000);
+      playStaffChime();
+    }, 1100);
   }
 
   if (sendBtn) {
@@ -3500,7 +3209,7 @@ function initCrispChat() {
 
     textarea.addEventListener('input', () => {
       textarea.style.height = 'auto';
-      textarea.style.height = Math.min(textarea.scrollHeight, 85) + 'px';
+      textarea.style.height = Math.min(textarea.scrollHeight, 80) + 'px';
     });
   }
 
@@ -3526,38 +3235,7 @@ function initCrispChat() {
     });
   }
 
-  // Attach & Audio buttons
-  const attachBtn = document.getElementById('crispAttachBtn');
-  if (attachBtn) {
-    attachBtn.addEventListener('click', () => {
-      if (window.showToast) showToast('Dosya ve ekran görüntüsü paylaşımı için lütfen Discord bilet sistemimizi kullanın: https://discord.gg/wFaNxzyMU');
-    });
-  }
-
-  const audioBtn = document.getElementById('crispAudioBtn');
-  if (audioBtn) {
-    audioBtn.addEventListener('click', () => {
-      let curUser = null;
-      try {
-        curUser = JSON.parse(localStorage.getItem('syntax_current_user_v3'));
-      } catch (e) {}
-
-      if (!curUser) {
-        if (window.showToast) window.showToast('Sesli sohbet ve canlı destek için lütfen önce üye girişi yapınız!', 'alert-circle');
-        if (typeof window.openAuthModal === 'function') {
-          window.openAuthModal('user');
-        }
-        return;
-      }
-
-      if (window.showToast) window.showToast('️ Canlı sesli destek odası açılıyor... Mikrofon bağlantısı kuruluyor.', 'mic');
-      setTimeout(() => {
-        if (window.showToast) window.showToast('️ Sesli destek yetkilisine bağlanıldı. Konuşabilirsiniz.', 'check-circle');
-      }, 1200);
-    });
-  }
-
-  // Options button
+  // Options menu toggle
   if (optionsBtn && optionsMenu) {
     optionsBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -7355,11 +7033,21 @@ function initAuthAndUserPanel() {
           noxy.password = '80Ozan84';
           noxy.rank = 'Kurucu & Sistem Sahibi (Owner)';
         }
+        // Purge any legacy "Hoş Geldin" gift licenses
+        users.forEach(u => {
+          if (Array.isArray(u.licenses)) {
+            u.licenses = u.licenses.filter(lic => !lic.product || (!lic.product.includes('Hoş Geldin') && !lic.product.includes('Legit (Hoş')));
+          }
+        });
         localStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(users));
 
-        // If current user is a deleted demo account, log them out
+        // If current user is a deleted demo account, log them out, and clean their gift licenses
         try {
           const curUser = JSON.parse(localStorage.getItem(STORAGE_CURRENT_USER) || 'null');
+          if (curUser && Array.isArray(curUser.licenses)) {
+            curUser.licenses = curUser.licenses.filter(lic => !lic.product || (!lic.product.includes('Hoş Geldin') && !lic.product.includes('Legit (Hoş')));
+            localStorage.setItem(STORAGE_CURRENT_USER, JSON.stringify(curUser));
+          }
           if (curUser && ['admin', 'reseller', 'demo'].includes((curUser.username || '').toLowerCase())) {
             localStorage.removeItem(STORAGE_CURRENT_USER);
           }
@@ -7917,14 +7605,7 @@ function initAuthAndUserPanel() {
       createdAt: now.toISOString().split('T')[0],
       source: 'Web Kayıt Formu',
       termsAccepted: true,
-      licenses: role === 'user' ? [
-        {
-          product: 'Valorant VIP Legit (Hoş Geldin)',
-          key: 'SYNTAX-VAL-' + Math.random().toString(36).substring(2,6).toUpperCase() + '-2026',
-          daysLeft: 7,
-          status: 'UNDETECTED & AKTİF'
-        }
-      ] : []
+      licenses: []
     };
 
     users.push(newUser);

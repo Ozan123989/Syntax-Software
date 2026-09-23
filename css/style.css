@@ -2311,11 +2311,11 @@ body {
 /* === FLOATING ACTION BUTTONS === */
 .floating-widget-stack {
   position: fixed;
-  bottom: 2rem;
-  left: 2rem;
+  bottom: 1.5rem;
+  left: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.65rem;
   z-index: 999;
 }
 
@@ -2505,14 +2505,14 @@ body.theme-bw .float-btn-theme svg {
   bottom: 5.2rem;
   right: 2rem;
   left: auto !important;
-  width: 410px;
+  width: 420px;
   max-width: calc(100vw - 2.5rem);
-  height: 640px;
+  height: 650px;
   max-height: calc(100vh - 6rem);
-  background: #0b0d18;
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  border-radius: 20px;
-  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.85), 0 0 40px rgba(168, 85, 247, 0.25);
+  background: #070c14;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  border-radius: 22px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 35px rgba(16, 185, 129, 0.15);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -2530,15 +2530,14 @@ body.theme-bw .float-btn-theme svg {
   pointer-events: auto;
 }
 
-/* Crisp Dark Header */
+/* Reference Dark Emerald Header */
 .crisp-header {
-  background: linear-gradient(135deg, #1b1238 0%, #10142b 60%, #0d1738 100%) !important;
-  border-bottom: 1px solid rgba(168, 85, 247, 0.25);
-  padding: 0.85rem 1.1rem 0.95rem;
+  background: linear-gradient(135deg, #063c2f 0%, #03251e 50%, #08111e 100%) !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 0.85rem 1rem 0.95rem;
   color: #ffffff;
   position: relative;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
   flex-shrink: 0;
 }
 
@@ -2546,137 +2545,173 @@ body.theme-bw .float-btn-theme svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
 }
 
-.crisp-messages-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: rgba(14, 18, 36, 0.85);
-  padding: 0.38rem 0.95rem;
-  border-radius: 999px;
-  font-size: 0.80rem;
-  font-weight: 800;
-  color: #ffffff;
-  border: 1.5px solid rgba(168, 85, 247, 0.4);
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.crisp-messages-pill:hover {
-  background: #171d3a;
-  border-color: #c084fc;
-  color: #c084fc;
-  transform: translateY(-1px);
-  box-shadow: 0 5px 16px rgba(192, 132, 252, 0.35);
-}
-
-.crisp-top-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-
-.crisp-icon-action {
+/* Left Minimize Button [ v ] */
+.crisp-minimize-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.9);
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 6px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
-.crisp-icon-action:hover {
-  background: rgba(255, 255, 255, 0.2);
+.crisp-minimize-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
   color: #ffffff;
+  transform: translateY(1px);
 }
 
-/* Avatars Trio */
-.crisp-avatars-trio {
+/* Center Agent Profile */
+.crisp-agent-profile {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 0.4rem;
+  gap: 0.75rem;
+  flex: 1;
+  margin: 0 0.65rem;
 }
 
-.crisp-avatar-circle {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid rgba(168, 85, 247, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  background: #13172c;
-  color: #94a3b8;
-  overflow: hidden;
+.crisp-agent-avatar-wrap {
   position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
 }
 
-.crisp-avatar-circle:first-child {
-  margin-left: 0;
+.radar-pulse-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid rgba(16, 185, 129, 0.6);
+  animation: radarWave 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  pointer-events: none;
 }
 
-.crisp-avatar-circle.primary {
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
-  border-color: #a855f7;
-  color: #ffffff;
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+@keyframes radarWave {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
-.crisp-header-title {
-  font-size: 1.02rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 0.2rem;
-  letter-spacing: -0.01em;
-}
-
-.crisp-header-sub {
-  font-size: 0.72rem;
-  color: #94a3b8;
+.crisp-agent-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2.5px solid #10b981;
+  overflow: hidden;
+  background: #0b1528;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.45);
+}
+
+.crisp-agent-avatar svg {
+  width: 100%;
+  height: 100%;
+}
+
+.crisp-agent-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.25;
+}
+
+.crisp-agent-name-row {
+  display: flex;
+  align-items: center;
   gap: 0.35rem;
 }
 
-.crisp-header-sub .sub-pulse-green {
-  width: 7px;
-  height: 7px;
-  background: #10b981;
+.crisp-agent-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.crisp-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  color: #10b981;
+}
+
+.crisp-agent-status-row {
+  font-size: 0.73rem;
+  color: #cbd5e1;
+  margin-top: 1px;
+}
+
+.crisp-agent-response-row {
+  font-size: 0.70rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1px;
+}
+
+.crisp-status-dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
+  background: #10b981;
   box-shadow: 0 0 8px #10b981;
+}
+
+/* Right Header Actions */
+.crisp-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.crisp-top-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.crisp-top-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
 }
 
 /* Live Ticket Status Pill */
 .crisp-ticket-status-pill {
-  margin: 0.4rem auto 0;
+  margin: 0.6rem auto 0;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(168, 85, 247, 0.35);
+  border: 1px solid rgba(16, 185, 129, 0.35);
   color: #34d399;
-  padding: 0.22rem 0.7rem;
+  padding: 0.25rem 0.8rem;
   border-radius: 999px;
-  font-size: 0.70rem;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
-/* Quick Topic Chips (Hızlı Destek Butonları) */
+/* Quick Topic Chips */
 .crisp-customer-quickchips {
   padding: 0.55rem 0.9rem;
-  background: #0e111f;
+  background: #090e18;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   gap: 0.45rem;
@@ -2689,14 +2724,14 @@ body.theme-bw .float-btn-theme svg {
   height: 3px;
 }
 .crisp-customer-quickchips::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.3);
+  background: rgba(16, 185, 129, 0.3);
   border-radius: 3px;
 }
 
 .crisp-user-chip {
-  background: rgba(168, 85, 247, 0.1);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  color: #d8b4fe;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  color: #6ee7b7;
   font-size: 0.72rem;
   font-weight: 700;
   padding: 0.28rem 0.65rem;
@@ -2710,22 +2745,63 @@ body.theme-bw .float-btn-theme svg {
 }
 
 .crisp-user-chip:hover {
-  background: rgba(168, 85, 247, 0.25);
-  border-color: #a855f7;
+  background: rgba(16, 185, 129, 0.22);
+  border-color: #10b981;
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Options Dropdown Menu */
+.crisp-options-menu {
+  position: absolute;
+  top: 4.2rem;
+  right: 0.85rem;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  z-index: 100;
+  min-width: 195px;
+  overflow: hidden;
+  padding: 0.35rem 0;
+}
+
+.crisp-opt-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+
+.crisp-opt-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.crisp-opt-item.text-danger {
+  color: #f87171;
 }
 
 /* Messages Body Dark */
 .crisp-body {
   flex: 1;
   overflow-y: auto;
-  padding: 1.25rem 1rem;
+  padding: 1rem 1rem 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  background: #080911;
+  gap: 0.9rem;
+  background: #080c14;
 }
 
 .crisp-body::-webkit-scrollbar {
@@ -2736,10 +2812,24 @@ body.theme-bw .float-btn-theme svg {
   border-radius: 4px;
 }
 
+/* Date separator badge */
+.crisp-date-badge {
+  text-align: center;
+  margin: 0.15rem 0 0.5rem;
+}
+
+.crisp-date-badge span {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.85rem;
+  border-radius: 999px;
+}
+
 .crisp-msg-row {
   display: flex;
-  gap: 0.55rem;
-  align-items: flex-start;
   animation: crispFadeIn 0.25s ease-out;
 }
 
@@ -2748,12 +2838,19 @@ body.theme-bw .float-btn-theme svg {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Incoming Agent Messages */
+.crisp-msg-row.incoming {
+  gap: 0.65rem;
+  align-items: flex-start;
+}
+
 .crisp-msg-avatar {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
-  color: #ffffff;
+  border: 1.5px solid #10b981;
+  overflow: hidden;
+  background: #0f172a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2761,49 +2858,117 @@ body.theme-bw .float-btn-theme svg {
   margin-top: 2px;
 }
 
-.crisp-msg-bubble {
-  padding: 0.75rem 1rem;
-  border-radius: 16px;
-  font-size: 0.86rem;
-  line-height: 1.45;
+.crisp-msg-avatar svg {
+  width: 100%;
+  height: 100%;
+}
+
+.crisp-msg-content-wrap {
+  display: flex;
+  flex-direction: column;
   max-width: 82%;
-  word-break: break-word;
+}
+
+.crisp-msg-author-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.3rem;
+}
+
+.crisp-author-name {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.crisp-author-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.12rem 0.48rem;
+  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
 }
 
 .crisp-msg-row.incoming .crisp-msg-bubble {
-  background: rgba(255, 255, 255, 0.06);
+  background: #111827;
   color: #f1f5f9;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3.5px solid #10b981;
+  border-radius: 16px;
   border-top-left-radius: 4px;
+  padding: 0.85rem 1.05rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  word-break: break-word;
+  white-space: pre-line;
 }
 
+/* Outgoing Customer Messages */
 .crisp-msg-row.outgoing {
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .crisp-msg-row.outgoing .crisp-msg-bubble {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
+  border-radius: 18px;
   border-top-right-radius: 4px;
-  box-shadow: 0 4px 18px rgba(139, 92, 246, 0.35);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  padding: 0.75rem 1.15rem;
+  font-size: 0.90rem;
+  font-weight: 600;
+  line-height: 1.45;
+  max-width: 82%;
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.crisp-msg-time-row {
+  display: flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.70rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+  padding: 0 0.3rem;
+}
+
+.crisp-msg-time-row.outgoing {
+  justify-content: flex-end;
+}
+
+.read-ticks {
+  color: #38bdf8;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: -1px;
+}
+
+/* Typing Bubble Indicator */
+.crisp-msg-row.typing-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
 }
 
 .crisp-typing-bubble {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 0.65rem 0.95rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  border-top-left-radius: 4px;
-  width: fit-content;
+  gap: 0.45rem;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 0.6rem 0.95rem;
 }
 
 .crisp-typing-dot {
   width: 6px;
   height: 6px;
-  background: #a855f7;
+  background: #10b981;
   border-radius: 50%;
   animation: crispBlink 1.4s infinite both;
 }
@@ -2816,67 +2981,67 @@ body.theme-bw .float-btn-theme svg {
   40% { opacity: 1; transform: scale(1.1); }
 }
 
-/* Footer & Input Box Dark */
+.typing-text {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin-left: 0.2rem;
+}
+
+/* Footer & Modern Pill Input */
 .crisp-footer {
-  padding: 0.75rem 1rem 0.85rem;
-  background: #0d101e;
+  padding: 0.75rem 0.95rem 0.65rem;
+  background: #090e17;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   flex-shrink: 0;
 }
 
 .crisp-input-container {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  padding: 0.65rem 0.85rem 0.5rem;
-  background: rgba(10, 13, 24, 0.95);
+  display: flex;
+  align-items: center;
+  background: #111827;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem 0.35rem 1.1rem;
   transition: all 0.2s ease;
 }
 
 .crisp-input-container:focus-within {
-  border-color: #a855f7;
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
 
 .crisp-textarea {
-  width: 100%;
+  flex: 1;
   border: none;
   outline: none;
   font-family: inherit;
   font-size: 0.88rem;
   color: #f1f5f9;
   resize: none;
-  height: 38px;
-  max-height: 85px;
-  line-height: 1.4;
+  height: 26px;
+  max-height: 70px;
+  line-height: 26px;
   background: transparent;
+  padding: 0;
 }
 
 .crisp-textarea::placeholder {
-  color: #94a3b8;
+  color: #64748b;
 }
 
 .crisp-input-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 0.35rem;
-  padding-top: 0.35rem;
-  border-top: 1px solid #f8fafc;
-}
-
-.crisp-media-buttons {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  gap: 0.4rem;
 }
 
 .crisp-tool-btn {
   background: transparent;
   border: none;
-  color: #64748b;
+  color: #94a3b8;
   cursor: pointer;
   padding: 4px;
-  border-radius: 4px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2884,50 +3049,105 @@ body.theme-bw .float-btn-theme svg {
 }
 
 .crisp-tool-btn:hover {
-  color: #1068eb;
+  color: #10b981;
 }
 
 .crisp-send-btn {
-  background: transparent;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #10b981;
   border: none;
-  color: #1068eb;
+  color: #ffffff;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
 }
 
 .crisp-send-btn:hover {
-  transform: scale(1.18);
+  transform: scale(1.08);
+  background: #059669;
 }
 
-.crisp-branding {
-  text-align: center;
-  font-size: 0.72rem;
-  color: #94a3b8;
-  margin-top: 0.5rem;
+/* Reference Sub-bar: 256-bit SSL & Feedback */
+.crisp-sub-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 0.6rem;
+  padding: 0 0.35rem;
 }
 
-.crisp-branding span.brand-name {
+.crisp-sub-ssl {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.sub-sep {
+  color: #475569;
+}
+
+.sub-brand {
+  color: #94a3b8;
   font-weight: 700;
+}
+
+.crisp-sub-feedback {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.feedback-label {
   color: #64748b;
 }
 
-/* Emoji Quick Menu */
+.crisp-rate-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 1px 3px;
+  border-radius: 4px;
+  transition: transform 0.15s;
+}
+
+.crisp-rate-btn:hover {
+  transform: scale(1.25);
+}
+
+.sub-live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #34d399;
+  font-weight: 700;
+}
+
+.sub-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+/* Emoji Quick Menu Dark */
 .crisp-emoji-popover {
   position: absolute;
   bottom: 85px;
-  left: 20px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  right: 20px;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
   border-radius: 12px;
   padding: 8px;
   display: none;
@@ -2950,7 +3170,7 @@ body.theme-bw .float-btn-theme svg {
 }
 
 .crisp-emoji-btn:hover {
-  background: #f1f5f9;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Crisp Admin Toggle & Staff Messaging System */
@@ -8747,6 +8967,31 @@ body.theme-bw .cheat-panel-watermark {
 .btn-goto-active-ticket:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 22px rgba(88, 101, 242, 0.5);
+}
+
+.btn-close-and-new-ticket {
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #fca5a5;
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-close-and-new-ticket:hover {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
 }
 
 /* Claim Bar inside Discord Hub */
